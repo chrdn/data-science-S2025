@@ -35,3 +35,5 @@ Data Science is a powerful toolkit to extract usable insights from data. In this
 # Contributing
 I welcome suggestions and contributions! If you want to contribute, please see
 [Contributing](https://github.com/zdelrosario/data-science-curriculum/blob/master/contributing.md).
+
+Testing the push
