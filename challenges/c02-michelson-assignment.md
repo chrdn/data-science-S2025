@@ -211,7 +211,7 @@ human judgment.\[2\]
 ### **q3** Compare Michelson’s speed of light estimate against the modern speed of light value. Is Michelson’s estimate of the error (his uncertainty) greater or less than the true error?
 
 ``` r
-LIGHTSPEED_VACUUM > LIGHTSPEED_MICHELSON-LIGHTSPEED_PM & LIGHTSPEED_MICHELSON+LIGHTSPEED_PM
+LIGHTSPEED_MICHELSON-LIGHTSPEED_PM < LIGHTSPEED_VACUUM & LIGHTSPEED_VACUUM < LIGHTSPEED_MICHELSON+LIGHTSPEED_PM
 ```
 
     ## [1] FALSE
@@ -227,7 +227,7 @@ His estimate is less than the true error
 his error.
 
 ``` r
-LIGHTSPEED_MICHELSON-LIGHTSPEED_PM-LIGHTSPEED_VACUUM
+(LIGHTSPEED_MICHELSON-LIGHTSPEED_PM)-LIGHTSPEED_VACUUM
 ```
 
     ## [1] 100.542
@@ -332,31 +332,54 @@ Differences
 - Make sure to record observations on your graphs
 
 ``` r
-df_michelson %>% 
-  ggplot(aes(x=Temp,y=Velocity)) + 
-  geom_point()
-```
-
-![](c02-michelson-assignment_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
-
-``` r
-df_michelson %>% 
-  ggplot(aes(x=Temp,y=Velocity)) + 
+df_q2 %>% 
+  ggplot(aes(x=Temp,y=VelocityVacuum, color=Distinctness)) + 
   geom_point() + 
   geom_smooth(method=lm , color="red", se=FALSE) 
 ```
 
     ## `geom_smooth()` using formula = 'y ~ x'
 
-![](c02-michelson-assignment_files/figure-gfm/unnamed-chunk-3-2.png)<!-- -->
+![](c02-michelson-assignment_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+
+Temperature and the velocity of light in a vacuum is an interesting
+relationship. The speed of light in a vacuum is a constant. And thus,
+temperature should not affect that case. However, `VelocityVacuum` was
+derived by adding `92 km/s` to `Velocity`. When light propogates through
+a medium, it can be affected by material properties such as density,
+which is in turn affected by temperature.
 
 ``` r
-df_michelson %>% 
-  ggplot(aes(x=Date,y=Velocity)) + 
+df_q2 %>% 
+  ggplot(aes(x=Date,y=VelocityVacuum, color=Distinctness)) + 
   geom_point()
 ```
 
 ![](c02-michelson-assignment_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
+
+From this graph, we can see that Michelson tended to make observations
+of the same Distinctness on a particular day. In fact, we can see that
+most of his `Distinctness=1` observations were made on the same day.
+Additionally, it has a smaller sample size, and a wide range of values
+for a sample size of this quantity. Thus, it is uncertain whether a
+certain mean on a certain day was affected by the distinctness of the
+measured image.
+
+``` r
+df_q2 %>% 
+  ggplot(aes(VelocityVacuum))+
+  geom_bar()
+```
+
+![](c02-michelson-assignment_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
+
+This graph plots shows the number of times a specific VelocityVacuum is
+recorded. We can see that the median would be ~299950 km/s, which is
+pretty close to Michelson’s estimate of 299944 km/s. However, the actual
+speed of light in a vacuum is 299792 km/s, which is almost at the lower
+range of his data collection. His whole data seems shifted from the real
+value. This is indicative of a systematic error with the experiment
+itself, rather than an error with data collection.
 
 ## Bibliography
 
