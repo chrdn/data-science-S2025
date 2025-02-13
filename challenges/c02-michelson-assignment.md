@@ -1,7 +1,7 @@
 Michelson Speed-of-light Measurements
 ================
-(Your name here)
-2020-
+Christopher Nie
+2025-02-13
 
 - [Grading Rubric](#grading-rubric)
   - [Individual](#individual)
