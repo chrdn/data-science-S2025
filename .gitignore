@@ -3,4 +3,4 @@
 .RData
 .Ruserdata
 
-exercises_sequenced/
+*exercises_sequenced/*.Rmd
