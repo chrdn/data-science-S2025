@@ -1,7 +1,7 @@
 Aluminum Data
 ================
-(Your name here)
-2020-
+Christopher Nie
+2025-02-23
 
 - [Grading Rubric](#grading-rubric)
   - [Individual](#individual)
