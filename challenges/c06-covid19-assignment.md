@@ -1,7 +1,7 @@
 COVID-19
 ================
-(Your name here)
-2020-
+Christopher Nie
+2025-03-12
 
 - [Grading Rubric](#grading-rubric)
   - [Individual](#individual)
@@ -736,38 +736,23 @@ ggplot(df_q8, aes(x = date, y = value, color = county)) +
 - I am from San Francisco, California, so I wanted to explore San
   Francisco’s response to COVID-19.
 
-- Los Angeles and San Francisco have virtually the same shape. Only Los
-  Angeles is “scaled” compared to San Francisco. They have virtually the
-  same peak locations.
+- Los Angeles and San Francisco have virtually the same shape in both
+  `cases_per100k` and `deaths_per100k` . It almost looks like Los
+  Angeles is simply a scaled version of the San Francisco graphs. They
+  even have the same peak locations. However, it is important to
+  remember that Los Angeles has a much higher population than San
+  Francisco. Thus, in practice, the actual cases and deaths is much
+  higher than that of San Francisco.
 
-- This made me wonder if this was because they were both population
-  centers of California.
+- This shape similarity made me wonder if this was because they were
+  both population centers of California.
 
 - Thus, I wanted to look over other counties in California.
 
 ``` r
-df_normalized %>% filter(state == "California" & date == "2020-08-23")
-```
-
-    ## # A tibble: 58 × 9
-    ##    date       county       state     fips  cases deaths population cases_per100k
-    ##    <date>     <chr>        <chr>     <chr> <dbl>  <dbl>      <dbl>         <dbl>
-    ##  1 2020-08-23 Alameda      Californ… 06001 16744    234    1643700         1019.
-    ##  2 2020-08-23 Alpine       Californ… 06003     2      0       1146          175.
-    ##  3 2020-08-23 Amador       Californ… 06005   223     14      37829          589.
-    ##  4 2020-08-23 Butte        Californ… 06007  1618     17     227075          713.
-    ##  5 2020-08-23 Calaveras    Californ… 06009   197      2      45235          436.
-    ##  6 2020-08-23 Colusa       Californ… 06011   419      5      21464         1952.
-    ##  7 2020-08-23 Contra Costa Californ… 06013 12663    169    1133247         1117.
-    ##  8 2020-08-23 Del Norte    Californ… 06015   116      1      27424          423.
-    ##  9 2020-08-23 El Dorado    Californ… 06017   900      2     186661          482.
-    ## 10 2020-08-23 Fresno       Californ… 06019 23197    226     978130         2372.
-    ## # ℹ 48 more rows
-    ## # ℹ 1 more variable: deaths_per100k <dbl>
-
-``` r
+samples <- c("Los Angeles", "Merced", "Alameda", "San Diego", "Riverside", "San Diego", "Yolo", "Santa Barbara", "San Francisco")
 df_q8_1 <- df_normalized %>%
-  filter(county == "San Francisco" | county == "Alameda" | county == "Fresno") %>% 
+  filter(county %in% samples) %>% 
   pivot_longer(
     cols = c(cases_per100k, deaths_per100k),
     names_to = "metric",
@@ -776,10 +761,135 @@ df_q8_1 <- df_normalized %>%
 
 ggplot(df_q8_1, aes(x = date, y = value, color = county)) +
   geom_line(linewidth = 1) +
-  facet_wrap(~metric, scales = "free_y", ncol = 1, strip.position = "left") 
+  facet_wrap(~metric, scales = "free_y", ncol = 1, strip.position = "left") +
+  scale_color_brewer(palette="Accent")
+```
+
+![](c06-covid19-assignment_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
+
+- I looked at the counties where the various Universities of California
+  (UC) campuses are located. I chose not to graph UC Irvine and UC Santa
+  Cruz because their graphs had a lot of noise. Most noticeably, all of
+  these locations can be considered major metropolitan areas. We can see
+  that most of the `cases_per100k` look like a scaling factor was
+  applied to some other city’s graph.
+
+- However, the `death_per100k` looks quite different for each county.
+  According to one source \[1\], LA’s high death rate and case rate
+  might be due to factors such as “people per bedroom” rather than just
+  “people per square foot”. In other words, another metric to measure
+  overcrowded households. The other top contenders for `deaths_per100k`
+  is Merced and Riverside. It is interesting to see that they are also
+  among the highest for `cases_per100k`. These are two primarily
+  college-based areas. Thus, it is possible that, due to student housing
+  situations, they also have higher “people per bedroom” compared to the
+  other counties with UC’s, which are more independent of the students
+  at the UC.
+
+- I wanted to see if the same `cases_per100k` trends could be seen
+  across smaller counties of California.
+
+``` r
+samples <- c("San Francisco", "Solano", "Sonoma", "Stanislaus", "Glenn", "Lassen", "Madera")
+df_q8_1 <- df_normalized %>%
+  filter(county %in% samples) %>% 
+  pivot_longer(
+    cols = c(cases_per100k, deaths_per100k),
+    names_to = "metric",
+    values_to = "value"
+  )
+
+ggplot(df_q8_1, aes(x = date, y = value, color = county)) +
+  geom_line(linewidth = 1) +
+  facet_wrap(~metric, scales = "free_y", ncol = 1, strip.position = "left") +
+  scale_color_brewer(palette="Accent")
 ```
 
 ![](c06-covid19-assignment_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+
+- Again, we see similar trends for `cases_per100k` for peak locations.
+  The variability in `death_per100k` shows that it is not too related to
+  `cases_per100k`, and that there are many other factors in play to
+  determine it.
+
+- Next, I want to see if the `cases_per100k` was due to the COVID-19
+  strands, or if it was unique to California. Thus, I looked outside of
+  California.
+
+``` r
+samples <- c("Solano", "Ada", "Spokane", "Washtenaw", "Prince William", "Nueces", "Onondaga", "Monterey")
+df_q8_1 <- df_normalized %>%
+  filter(county %in% samples) %>% 
+  pivot_longer(
+    cols = c(cases_per100k, deaths_per100k),
+    names_to = "metric",
+    values_to = "value"
+  )
+
+ggplot(df_q8_1, aes(x = date, y = value, color = county)) +
+  geom_line(linewidth = 1) +
+  facet_wrap(~metric, scales = "free_y", ncol = 1, strip.position = "left") +
+  scale_color_brewer(palette="Accent")
+```
+
+![](c06-covid19-assignment_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
+
+- I chose counties with a population of ~400000 (mid size county). For
+  context, Needham, MA is part of the Norfolk county which has a
+  population of ~700000
+
+  - Ada, ID
+
+  - Monterey, CA
+
+  - Nueces, TX
+
+  - Onondaga, NY
+
+  - Prince William, VA
+
+  - Solano, CA
+
+  - Spokane, WA
+
+  - Washtenaw, MI
+
+- Looking at the `cases_per100k` graph, we can see a lot of variation.
+  Whereas the time history of the various California counties looked
+  almost parallel despite the varying population sizes, the time history
+  of the various counties (with similar population sizes) contains a lot
+  of intersection and back-and-forth crossings.
+
+- Thus, it looks like California’s similarities for `cases_per100k`
+  across counties was due to the fact that it was in the same state. The
+  actual cause can be anything from policies to travel patterns or
+  access to healthcare / ability.
+
+``` r
+df_normalized %>% 
+  filter(state == "California" & date == "2020-08-23") %>% 
+  arrange(desc(population))
+```
+
+    ## # A tibble: 58 × 9
+    ##    date       county         state  fips   cases deaths population cases_per100k
+    ##    <date>     <chr>          <chr>  <chr>  <dbl>  <dbl>      <dbl>         <dbl>
+    ##  1 2020-08-23 Los Angeles    Calif… 06037 231695   5545   10098052         2294.
+    ##  2 2020-08-23 San Diego      Calif… 06073  36603    660    3302833         1108.
+    ##  3 2020-08-23 Orange         Calif… 06059  45954    897    3164182         1452.
+    ##  4 2020-08-23 Riverside      Calif… 06065  49944    927    2383286         2096.
+    ##  5 2020-08-23 San Bernardino Calif… 06071  45035    691    2135413         2109.
+    ##  6 2020-08-23 Santa Clara    Calif… 06085  15688    225    1922200          816.
+    ##  7 2020-08-23 Alameda        Calif… 06001  16744    234    1643700         1019.
+    ##  8 2020-08-23 Sacramento     Calif… 06067  15515    234    1510023         1027.
+    ##  9 2020-08-23 Contra Costa   Calif… 06013  12663    169    1133247         1117.
+    ## 10 2020-08-23 Fresno         Calif… 06019  23197    226     978130         2372.
+    ## # ℹ 48 more rows
+    ## # ℹ 1 more variable: deaths_per100k <dbl>
+
+- \[1\] Schmidt, Grayson. *Why does LA have so many COVID-19 cases,* USC
+  Today. <a href="#0"
+  class="uri">https://today.usc.edu/los-angeles-covid-19-cases-density-housing-overcrowding-usc-experts/</a>
 
 ### Aside: Some visualization tricks
 
