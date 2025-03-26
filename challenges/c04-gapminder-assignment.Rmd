@@ -29,7 +29,7 @@ define how you will be graded, both on an individual and team basis.
 <!-- ------------------------- -->
 
 | Category | Needs Improvement | Satisfactory |
-|------------------|-----------------------------|-------------------------|
+|----|----|----|
 | Effort | Some task **q**'s left unattempted | All task **q**'s attempted |
 | Observed | Did not document observations, or observations incorrect | Documented correct observations based on analysis |
 | Supported | Some observations not clearly supported by analysis | All observations clearly supported by analysis (table, graph, etc.) |
@@ -190,7 +190,7 @@ label:
 ```{r layer-filter}
 ## NOTE: No need to edit, use ideas from this in q4 below
 gapminder %>%
-  filter(year == max(year)) %>%
+  filter(year == 1952) %>%
 
   ggplot(aes(continent, lifeExp)) +
   geom_boxplot() +
@@ -198,6 +198,9 @@ gapminder %>%
     data = . %>% filter(country %in% c("United Kingdom", "Japan", "Zambia")),
     mapping = aes(color = country),
     size = 2
+  ) + 
+  labs(
+    title = "Life expectancy by Continent (1952))"
   )
 ```
 
@@ -269,6 +272,9 @@ df_q5 %>%
   scale_y_continuous(
     name = "GDP per capita (USD)", 
     sec.axis = sec_axis(~ . * 1e6, name = "GDP (USD)")
+  ) + 
+  labs(
+    title = "Kuwait's GDP per Capita and GDP over time"
   )
 ```
 
@@ -300,7 +306,10 @@ df_q5_2 %>%
   geom_density(alpha = 0.3) + # Density plot with transparency
   
   theme_minimal() +
-  theme(legend.position = "top") 
+  theme(legend.position = "top") + 
+  labs(
+    title = "Life expectancy distribution over time"
+  )
 ## TASK: Your second graph
 # life expectancy density distribution? by year? by continent? 
 ```
@@ -371,11 +380,52 @@ ggplot(df_q5_2, aes(x = gdpPercap, y = lifeExp, color = year)) +
     a GDP per capita at $5\times10^3$ in the year 2007 would have the
     same expected life expectancy as someone in a country with a GDP per
     capita of $3\times10^4$ in 1967 or 1952.
+
 -   The ultimate commonality might simply just be time as technology
     increases.
+
 -   1952 and 1967 tend to follow the same line, while 1997 and 2007
     tendt to follow the same line.
+
 -   It looks like the spread also decreases with time, with 2007 and
     1997 having some of the smallest spreads and 1952 having a larger
     spread. This might mean that countries got better at using their GDP
     per capita to increase life expectancy as technology increased.
+
+    ```{r}
+    gapminder %>% 
+      filter(year==1952) %>% 
+      group_by(continent) %>% 
+      select(continent) %>% 
+      summary()
+    ```
+
+```{r}
+gapminder %>% 
+  filter(year==2007) %>% 
+  filter(lifeExp<50) %>% 
+  select(country)
+```
+
+```{r}
+df_project <- 
+  gapminder %>% 
+  filter(country == "Czech Republic") %>% 
+  mutate(gdp = gdpPercap*pop)
+df_project %>% 
+  ggplot(aes(x=year)) + 
+  geom_line(aes(y=gdpPercap, color = "GDP per Capita"), linewidth = 1) +
+  #geom_line(aes(y=gdp / 1e6, color = "GDP (in millions)"), linewidth = 1) + 
+  scale_y_continuous(
+    name = "GDP per capita (USD)", 
+    sec.axis = sec_axis(~ . * 1e6, name = "GDP (USD)")
+  ) + 
+  labs(
+    title = "Czceh Republic's GDP per Capita and GDP over time"
+  )
+```
+
+```{r}
+gapminder %>% 
+  filter(country == "Latvia")
+```
