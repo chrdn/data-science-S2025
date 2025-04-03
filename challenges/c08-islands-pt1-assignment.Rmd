@@ -111,7 +111,7 @@ df_q3
 
 Use the following to check your work.
 
-```{r q3-test}
+```{r q3-tests}
 ## NOTE: No need to change this
 ## Check that data has `p` column and is in descending order
 assertthat::assert_that(
@@ -195,7 +195,7 @@ df_sample_random
 
 Use the following to check your work.
 
-```{r q3-tests}
+```{r q5-tests}
 ## NOTE: No need to change this
 # Check that the dataset has the correct column names
 assertthat::assert_that(setequal(
