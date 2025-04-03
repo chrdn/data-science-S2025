@@ -122,28 +122,57 @@ you still need to count, because your numbers *will* be different!
 **Observations**:
 
 - What is the total number of homes in Helvig?
-  - 555 homes
+  - 551 homes
 - What is the number of unoccupied homes? (*Hint*: This is not given
   anywhere. You will have to count them!)
-  - (Your response here)
+  - 18 unoccupied homes
 - What percent of homes are *occupied*?
-  - (Your response here)
+  - 96.7%
 - Are there any sources of *real* uncertainty in the percent occupied
   you calculated?
-  - (Your response here)
+  - There should be no sources of real uncertainty. We counted every
+    single house and every single unoccupied house.
 - Are there any sources of *erroneous* uncertainty in the percent
   occupied you calculated?
-  - (Your response here)
+  - There might be erroneous uncertainty from whether I counted
+    correctly. It is possible that I missed several homes.
 
 Zach looked at the first 25 homes in Helvig and recorded the `age` and
 `name` of every person in those homes. These people are provided in
 `helvig-seq.csv`.
 
 ``` r
-# ## NOTE: Do not edit this
-# df_sample_seq <- read_csv("./data/helvig-seq.csv")
-# df_sample_seq 
+## NOTE: Do not edit this
+df_sample_seq <- read_csv("./data/helvig-seq.csv")
 ```
+
+    ## Rows: 63 Columns: 3
+    ## ── Column specification ────────────────────────────────────────────────────────
+    ## Delimiter: ","
+    ## chr (1): name
+    ## dbl (2): house, age
+    ## 
+    ## ℹ Use `spec()` to retrieve the full column specification for this data.
+    ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+
+``` r
+df_sample_seq 
+```
+
+    ## # A tibble: 63 × 3
+    ##    house   age name             
+    ##    <dbl> <dbl> <chr>            
+    ##  1     1    58 Arvid Thorn      
+    ##  2     1    55 Benjamin Connolly
+    ##  3     2    46 Remy Tiwari      
+    ##  4     2    44 Sophia Solberg   
+    ##  5     2    14 Illona Solberg   
+    ##  6     2    12 William Tiwari   
+    ##  7     2    10 Hans Solberg     
+    ##  8     3    24 Kaya Carlsen     
+    ##  9     3    23 Julian Eklund    
+    ## 10     3     4 Katharina Carlsen
+    ## # ℹ 53 more rows
 
 You’ll use this dataset as a starting point to figure out prevalent
 *last names* in Helvig.
@@ -163,25 +192,62 @@ prevalence.
 to extract the *last names* only!
 
 ``` r
-# ## TASK: Compute the prevalence and sort
-# df_q3 <- 
-#   df_sample_seq %>% 
-# ## TODO: Complete this code
-# 
-# df_q3
+## TASK: Compute the prevalence and sort
+df_q3 <- 
+  df_sample_seq %>% 
+  mutate(last_name = word(name, -1)) %>% 
+  count(last_name, sort = TRUE) %>% 
+  mutate(p = n/length(df_sample_seq$house))
+
+df_q3
 ```
+
+    ## # A tibble: 28 × 3
+    ##    last_name     n      p
+    ##    <chr>     <int>  <dbl>
+    ##  1 Sorensen      8 0.127 
+    ##  2 Lund          6 0.0952
+    ##  3 Solberg       5 0.0794
+    ##  4 Eklund        4 0.0635
+    ##  5 Blomgren      3 0.0476
+    ##  6 Carlsen       3 0.0476
+    ##  7 Jansen        3 0.0476
+    ##  8 Morris        3 0.0476
+    ##  9 Banerjee      2 0.0317
+    ## 10 Chunduri      2 0.0317
+    ## # ℹ 18 more rows
 
 Use the following to check your work.
 
-`` {# {r q3-tests} # ## NOTE: No need to change this # ## Check that data has `p` column and is in descending order # assertthat::assert_that( #               all(df_q3 %>% #                  mutate(d = p - lead(p)) %>%  #                  filter(!is.na(d)) %>%  #                  pull(d) >= 0 #               ) #             ) # print("Very good!") ``
+``` r
+## NOTE: No need to change this
+## Check that data has `p` column and is in descending order
+assertthat::assert_that(
+              all(df_q3 %>%
+                 mutate(d = p - lead(p)) %>% 
+                 filter(!is.na(d)) %>% 
+                 pull(d) >= 0
+              )
+            )
+```
+
+    ## [1] TRUE
+
+``` r
+print("Very good!")
+```
+
+    ## [1] "Very good!"
 
 *Observations*
 
 - What last name is most prevalent in `df_sample_seq`?
-  - (Your response here)
+  - Sorensen was the most common last name
 - Is this sample representative of *all* houses in Helvig? Why or why
   not?
-  - (Your response here)
+  - This sample is not representative, as this dataset only represents
+    the first 25 houses in the dataset. This introduces certain biases,
+    such as proximity.
 
 In the exercises, we talked about the importance of random sampling. In
 the previous challenge, we were able to *simulate* a random sample by
@@ -195,33 +261,45 @@ Complete the code below to draw a sample of size `n=25`. Replace
 `n_houses` with the (current) total number in Helvig.
 
 ``` r
-# ## TASK: Set the parameters for this code block
-# 
-# ## Select a random sample of houses
-# # n_houses <- ??? # Total number of houses
-# # n_sample <- ???  # Desired sample size
-# 
-# set.seed(101)   # Set a seed for reproducibility
-# 
-# df_numbers_random <-
-#   tibble(
-#     house = sample(
-#         1:n_houses,     # All integers from 1 to n_houses
-#         n_sample,       # Size of our sample
-#         replace = FALSE # Sample *WITHOUT* replacement
-#       )
-#   ) %>%
-#   # Arrange for our data collection convenience
-#   arrange(house)
-# 
-# # Pull the column so we can list just the house numbers
-# df_numbers_random %>%
-#   pull(house)
+## TASK: Set the parameters for this code block
+
+## Select a random sample of houses
+# n_houses <- ??? # Total number of houses
+# n_sample <- ???  # Desired sample size
+
+set.seed(101)   # Set a seed for reproducibility
+n_houses <- 551
+n_sample = 25
+
+df_numbers_random <- 
+  tibble(
+    house = sample(
+        1:n_houses,     # All integers from 1 to n_houses
+        n_sample,       # Size of our sample
+        replace = FALSE # Sample *WITHOUT* replacement
+      )
+  ) %>% 
+  # Arrange for our data collection convenience
+  arrange(house)
+
+# Pull the column so we can list just the house numbers
+df_numbers_random %>% 
+  pull(house)
 ```
+
+    ##  [1]  14  95  97 117 131 192 204 209 240 244 246 298 315 316 351 352 355 430 442
+    ## [20] 454 474 483 504 521 550
 
 Use the following code to check your results.
 
-`{# {r} # ## NOTE: No need to change this # assertthat::assert_that( #   all(dim(df_numbers_random) == c(25, 1)) # )`
+``` r
+## NOTE: No need to change this
+assertthat::assert_that(
+  all(dim(df_numbers_random) == c(25, 1))
+)
+```
+
+    ## [1] TRUE
 
 ### **q5** Collect the random sample
 
@@ -231,25 +309,114 @@ exercise. Match the same columns as `df_sample_seq`; those are, `house`,
 occupants. Save your data as a CSV with the filename provided in the
 variable `filename_random`. Answer the questions below.
 
-`{# {r} # ## NOTE: Do not edit # filename_random`
+``` r
+## NOTE: Do not edit
+filename_random
+```
+
+    ## [1] "./data/helvig-random.csv"
 
 Note that this points to the `data/` subdirectory in your `challenges`
 folder.
 
 The following code will load your data.
 
-`{# {r} # ## NOTE: Do not edit # df_sample_random <-  #   read_csv(filename_random)`
+``` r
+## NOTE: Do not edit
+df_sample_random <- 
+  read_csv(filename_random)
+```
+
+    ## Rows: 61 Columns: 3
+    ## ── Column specification ────────────────────────────────────────────────────────
+    ## Delimiter: ","
+    ## chr (1): name
+    ## dbl (2): house, age
+    ## 
+    ## ℹ Use `spec()` to retrieve the full column specification for this data.
+    ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+
+``` r
+df_sample_random
+```
+
+    ## # A tibble: 61 × 3
+    ##    house name               age
+    ##    <dbl> <chr>            <dbl>
+    ##  1    14 Jonas Eklund        48
+    ##  2    14 Katharina Eklund    47
+    ##  3    95 Bailey Raske        25
+    ##  4    95 Torvald Blomgren    24
+    ##  5    95 Jackson Raske        1
+    ##  6    97 Marcus Collins      42
+    ##  7    97 Brigit Sorensen     41
+    ##  8   117 Nico Lund           47
+    ##  9   117 Abby Collins        47
+    ## 10   131 Dane Thorn          48
+    ## # ℹ 51 more rows
 
 Use the following to check your work.
 
-`{# {r q3-tests} # ## NOTE: No need to change this # # Check that the dataset has the correct column names # assertthat::assert_that(setequal( #   df_sample_random %>% names(), #   df_sample_seq %>% names() # )) #  # # Check that all of the house numbers in the dataset match those that were planned # numVsamp <- #   anti_join( #     df_numbers_random, #     df_sample_random %>% distinct(house), #     by = "house" #   ) %>% #   pull(house) # assertthat::assert_that( #   length(numVsamp) == 0, #   msg = str_c("You are missing the houses: ", numVsamp) # ) #  # sampVnum <- #   anti_join( #     df_sample_random %>% distinct(house), #     df_numbers_random, #     by = "house" #   ) %>% #   pull(house) # assertthat::assert_that( #   length(sampVnum) == 0, #   msg = str_c("You have extra houses: ", sampVnum) # ) #  # print("Great work!")`
+``` r
+## NOTE: No need to change this
+# Check that the dataset has the correct column names
+assertthat::assert_that(setequal(
+  df_sample_random %>% names(),
+  df_sample_seq %>% names()
+))
+```
+
+    ## [1] TRUE
+
+``` r
+# Check that all of the house numbers in the dataset match those that were planned
+numVsamp <- 
+  anti_join(
+    df_numbers_random,
+    df_sample_random %>% distinct(house),
+    by = "house"
+  ) %>% 
+  pull(house)
+assertthat::assert_that(
+  length(numVsamp) == 0,
+  msg = str_c("You are missing the houses: ", numVsamp)
+)
+```
+
+    ## [1] TRUE
+
+``` r
+sampVnum <- 
+  anti_join(
+    df_sample_random %>% distinct(house),
+    df_numbers_random,
+    by = "house"
+  ) %>% 
+  pull(house)
+assertthat::assert_that(
+  length(sampVnum) == 0,
+  msg = str_c("You have extra houses: ", sampVnum)
+)
+```
+
+    ## [1] TRUE
+
+``` r
+print("Great work!")
+```
+
+    ## [1] "Great work!"
 
 *Observations*
 
 - Which sample—sequential or random—is more *representative* of all
   homes Helvig? Why?
-  - (Sequential or random?)
-  - (Write your ‘why’ here.)
+  - Random
+  - By taking a random sample, we remove any biases that may come from
+    taking data from clumped group of houses. Although the number of
+    people are around the same, we cover a wider range of people. It is
+    possible that there are socioeconomic “regions” or other for houses
+    around the same area.
 
 ### **q6** Find common names: Random sample
 
@@ -257,16 +424,58 @@ Run the code below to find the prevalence of the most common *last name*
 in Helvig using the sample `df_sample_random`. Answer the questions
 below.
 
-`{# {r} # # NOTE: No need to edit; run and answer the questions below # df_sample_random %>%  #   mutate(last = str_extract(name, "\\w+$")) %>%  #   count(last) %>%  #   arrange(desc(n)) %>%  #   mutate(p = n / sum(n))`
+``` r
+# NOTE: No need to edit; run and answer the questions below
+df_sample_random %>% 
+  mutate(last = str_extract(name, "\\w+$")) %>% 
+  count(last) %>% 
+  arrange(desc(n)) %>% 
+  mutate(p = n / sum(n))
+```
+
+    ## # A tibble: 27 × 3
+    ##    last         n      p
+    ##    <chr>    <int>  <dbl>
+    ##  1 Collins      6 0.0984
+    ##  2 Blomgren     4 0.0656
+    ##  3 Regan        4 0.0656
+    ##  4 Sorensen     4 0.0656
+    ##  5 Carlsen      3 0.0492
+    ##  6 Jensen       3 0.0492
+    ##  7 Lund         3 0.0492
+    ##  8 Solberg      3 0.0492
+    ##  9 Wilson       3 0.0492
+    ## 10 Burke        2 0.0328
+    ## # ℹ 17 more rows
+
+``` r
+df_q3
+```
+
+    ## # A tibble: 28 × 3
+    ##    last_name     n      p
+    ##    <chr>     <int>  <dbl>
+    ##  1 Sorensen      8 0.127 
+    ##  2 Lund          6 0.0952
+    ##  3 Solberg       5 0.0794
+    ##  4 Eklund        4 0.0635
+    ##  5 Blomgren      3 0.0476
+    ##  6 Carlsen       3 0.0476
+    ##  7 Jansen        3 0.0476
+    ##  8 Morris        3 0.0476
+    ##  9 Banerjee      2 0.0317
+    ## 10 Chunduri      2 0.0317
+    ## # ℹ 18 more rows
 
 *Observations*
 
 - Did you find any highly prevalent names using `df_sample_random` that
   you *didn’t* find in q3 (using `df_sample_seq`)? Write them here.
-  - (Your response here)
+  - Regan
+  - Eklund
 - Is there any reason that people with the same last name might tend to
   *live near each other*?
-  - (Your response here)
+  - It is possible that families group together.
 
 You should have found some difference between the sequential and random
 samples. This is because we’re only working with a *sample*—a limited
@@ -287,48 +496,81 @@ Complete the code below to write a helper function. Your function will
 compute the proportion of people in a sample that have a user-specified
 last name.
 
-`` {# {r} # ## TASK: Write a helper function that takes a dataframe with full names  # #  (provided in a `name` column), removes any invalid rows, and computes the # #  proportion of individuals with the user-specified `last` name (returned # #  in an `estimate` column). # name_prevalence <- function(df, last = "Collins") { #   df %>%  #     ## TODO: Finish this code #     mutate(term = "prevalence") # } ``
+``` r
+## TASK: Write a helper function that takes a dataframe with full names 
+#  (provided in a `name` column), removes any invalid rows, and computes the
+#  proportion of individuals with the user-specified `last` name (returned
+#  in an `estimate` column).
+name_prevalence <- function(df, last = "Collins") {
+  df %>% 
+    # Filter invalid characters
+    filter(!is.na(name)) %>% 
+    
+    # Last name
+    mutate(last_name = word(name, -1)) %>% 
+    
+    # proportion
+    mutate(estimate = mean(last_name == last), 
+           term = "prevalence") %>% 
+    select(estimate, term) %>% 
+    head(n=1)
+}
+```
 
 Use the following code to check your results.
 
 ``` r
-# ## NOTE: No need to change this
-# # Find the most prevalent name in the data
-# last_most <- 
-#   df_sample_random %>% 
-#   mutate(last = str_extract(name, "\\w+$")) %>% 
-#   count(last) %>% 
-#   arrange(desc(n)) %>% 
-#   slice(1) %>% 
-#   pull(last)
-# 
-# # Ensure correct columns
-# assertthat::assert_that(
-#   setequal(
-#     tibble(name = c("James")) %>% name_prevalence(., last = "James") %>% names(),
-#     c("term", "estimate")
-#   ),
-#   msg = "Your code should result a dataframe with just two columns: `term` and `estimate`"
-# )
-# 
-# # Ensure NA handling
-# assertthat::assert_that(
-#   !(tibble(name = c(NA_character_, "James")) %>% 
-#     name_prevalence(., last = "James") %>% 
-#     pull(estimate) %>% 
-#     is.na()),
-#   msg = "Ensure your code properly ignores NA's"
-# )
-# 
-# # Check for correctness
-# assertthat::assert_that(
-#   name_prevalence(df_sample_random, last = last_most) %>% pull(estimate) ==
-#     mean(str_detect(df_sample_random$name, last_most), na.rm = TRUE),
-#   msg = "Your code computed the wrong value"
-# )
-# 
-# print("Nice!")
+## NOTE: No need to change this
+# Find the most prevalent name in the data
+last_most <- 
+  df_sample_random %>% 
+  mutate(last = str_extract(name, "\\w+$")) %>% 
+  count(last) %>% 
+  arrange(desc(n)) %>% 
+  slice(1) %>% 
+  pull(last)
+
+# Ensure correct columns
+assertthat::assert_that(
+  setequal(
+    tibble(name = c("James")) %>% name_prevalence(., last = "James") %>% names(),
+    c("term", "estimate")
+  ),
+  msg = "Your code should result a dataframe with just two columns: `term` and `estimate`"
+)
 ```
+
+    ## [1] TRUE
+
+``` r
+# Ensure NA handling
+assertthat::assert_that(
+  !(tibble(name = c(NA_character_, "James")) %>% 
+    name_prevalence(., last = "James") %>% 
+    pull(estimate) %>% 
+    is.na()),
+  msg = "Ensure your code properly ignores NA's"
+)
+```
+
+    ## [1] TRUE
+
+``` r
+# Check for correctness
+assertthat::assert_that(
+  name_prevalence(df_sample_random, last = last_most) %>% pull(estimate) ==
+    mean(str_detect(df_sample_random$name, last_most), na.rm = TRUE),
+  msg = "Your code computed the wrong value"
+)
+```
+
+    ## [1] TRUE
+
+``` r
+print("Nice!")
+```
+
+    ## [1] "Nice!"
 
 ### **q8** Construct a bootstrap confidence interval
 
@@ -338,19 +580,46 @@ prevalence of that name. Answer the questions below.
 
 *Hint*: We learned how to do resampling-based inference in `e-stat09`.
 
-`` {# {r} # # TASK: Complete the code below to compute a bootstrap-based confidence interval # df_interval_bootstrap <-  #   df_sample_random %>%  #   bootstraps(., times = 1000) %>%  #   mutate( #     estimate = map( #       splits, #       function(split_df) { # ## TODO: Finish this code, using the name_prevalence() helper you implemented # ## HINT: Remember that you need to use analysis() when operating on split_df #       } #     ) #   ) %>%  #   ## NOTE: No need to edit this line; this uses your bootstrap sample to compute #   # a confidence `int`erval using the percentile method #   int_pctl(., estimate) #  # df_interval_bootstrap ``
+``` r
+# TASK: Complete the code below to compute a bootstrap-based confidence interval
+df_interval_bootstrap <- 
+  df_sample_random %>% 
+  bootstraps(., times = 1000) %>% 
+  mutate(
+    estimate = map(
+      splits,
+      function(split_df) {
+        analysis(split_df) %>% 
+          name_prevalence(last = "Sorensen")
+      }
+    )
+  ) %>% 
+  ## NOTE: No need to edit this line; this uses your bootstrap sample to compute
+  # a confidence `int`erval using the percentile method
+  int_pctl(., estimate)
+
+df_interval_bootstrap 
+```
+
+    ## # A tibble: 1 × 6
+    ##   term       .lower .estimate .upper .alpha .method   
+    ##   <chr>       <dbl>     <dbl>  <dbl>  <dbl> <chr>     
+    ## 1 prevalence 0.0164    0.0659  0.131   0.05 percentile
 
 **Observations**:
 
 - What is highest possible prevalence for your chosen name, based on the
   confidence interval you constructed?
-  - (Your response here)
+  - .1311475
 - Note that we used the *random* sample with the bootstrap procedure in
   this task. Could we use the bootstrap to make a confidence interval
   using the sequential sample (`df_sample_seq`) that would be
   representative of all of Helvig? Why or why not?
-  - (Yes or no.)
-  - (Write your ‘why’ here.)
+  - No
+  - No matter how we manipulate `df_sample_seq`, ultimately, it cannot
+    represent what it was not sampled to do. We can obtain the
+    confidence interval of the first 25 houses, but cannot make any
+    claims about the greater population of Helvig.
 
 ### **q9** Discover possible measurements
 
@@ -363,9 +632,9 @@ quantity of interest for the final task.
 Center](https://islands.smp.uq.edu.au/visitors.php) will be especially
 helpful for getting some ideas.
 
-- (Possible measurement \#1)
-- (Possible measurement \#2)
-- (Possible measurement \#3)
+- Housing location
+- Occupation
+- Money/net worth
 
 ### **q10** Planning a study (TEAMWORK)
 
@@ -379,7 +648,7 @@ submission.
 
 - (What population are you going to study?)
 
-  - We are going to study the islanders from the topmost island in the
+  - We are going to study the islanders from the Ironbard in the
     following cities:
 
     - Hofn
