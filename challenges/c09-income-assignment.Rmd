@@ -229,7 +229,7 @@ One last wrangling step: We need to join the two datasets so we can compare popu
 
 ```{r q5-task}
 ## TODO: Join df_q4 and df_pop by the appropriate column
-df_data <- inner_join(df_q3, df_pop, by = "Geography")
+df_data <- inner_join(df_q4, df_pop, by = "Geography")
 df_data
 ```
 
@@ -249,7 +249,7 @@ df_data %>%
   filter(str_detect(geographic_area_name, "Massachusetts")) %>%
   mutate(
     county = str_remove(geographic_area_name, " County,.*$"),
-    county = fct_reorder(county, income_estimate)
+    county = fct_reorder(county, income_estimate, .na_rm = TRUE)
   ) %>%
 
   ggplot(aes(county, income_estimate, color = category)) +
@@ -269,13 +269,16 @@ df_data %>%
 **Observations**:
 
 -   Document your observations here.
-    -   (Your response here)
-    -   (Your response here)
-    -   ...
+    -   Nantucket's 5-person has a range that spans the entire graph. In fact, it probably determined the x-range of the graph.
+    -   Generally, it looks like 2-person families have a the lowest median income when compared to the other family categories. However, 5-person and 6-person families tend to have the biggest range. Perhaps this is due to a lack of data points at this size.
+    -   3-person families generally make more than 2-person families.
+    -   2-person families seem to have the smallest range. Is this reflective of reality, or is it simply because there are fewer 2-person families?
+    -   Most 2-person families make between 50000 to 100000.
+    -   Is there another way to see whether location or category is more important to median income?
 -   Can you confidently distinguish between household incomes in Suffolk county? Why or why not?
-    -   (Your response here)
+    -   Not really, the data points at Suffolk county are clumped relative to the other data points. The ranges are similar, and the medians are very close together, probably within \~25000 of each other.
 -   Which counties have the widest confidence intervals?
-    -   (Your response here)
+    -   Nantucket has the largest confidence intervals. However, it doesn't appear to have data for 6-person families. The same situation applies for Dukes. Hampshire has the largest confidence interval for 6-person families. It also contains the confidence interval for 5-person families.
 
 In the next task you'll investigate the relationship between population and uncertainty.
 
@@ -284,14 +287,22 @@ In the next task you'll investigate the relationship between population and unce
 *Hint*: Remember that standard error is a function of *both* variability (e.g. variance) and sample size.
 
 ```{r q7-task}
+df_data %>% 
+  ggplot(aes(population_estimate, income_SE,color = category)) +
+  geom_point() + 
+  labs(
+    title = "Standard Error vs. Population", 
+    x = "Population Estimate", 
+    y = "Standard error"
+  )
 ```
 
 **Observations**:
 
 -   What *overall* trend do you see between `SE` and population? Why might this trend exist?
-    -   (Your response here)
+    -   As Population increases, the standard error decreases. The more sample size we have, the more confident we can be in our results.
 -   What does this *overall* trend tell you about the relative ease of studying small vs large counties?
-    -   (Your response here)
+    -   Although small counties means less 'work' as we have to collect and manage fewer data points, this comes at a cost of increasing uncertainty.
 
 # Going Further
 
@@ -302,12 +313,32 @@ Now it's your turn! You have income data for every county in the United States: 
 ### **q8** Pose your own question about the data. Create a visualization (or table) here, and document your observations.
 
 ```{r q8-task}
-## TODO: Pose and answer your own question about the data
+df_data %>% 
+  filter(str_detect(geographic_area_name, "Alabama")) %>%
+  mutate(
+    county = str_remove(geographic_area_name, " County,.*$"),
+    county = fct_reorder(county, income_estimate, .na_rm = TRUE)
+  ) %>% 
+  ggplot(aes(population_estimate, income_estimate,size =income_CV, color = category)) +
+  geom_point() + 
+  scale_x_log10() + 
+  labs(
+    title = "Median Income vs. Population", 
+    x = "Population Estimate (Log scale)", 
+    y = "Median Income",
+    size = "Normalized Standard error"
+  )
 ```
 
 **Observations**:
 
--   Document your observations here
+-   This graph shows the median income vs population. The size correlates to the normalized standard error.
+-   Points on the same vertical line are probably the same county.
+-   The biggest points are the 6-person families
+-   We can see that the 2-person families generally have the smallest normalized standard error.
+-   The town with the smallest population had the biggest errors across all the categories
+-   This graph for Alabama shows the tendencies of the previous graphs, suggesting that the relationship between sample size and error is a fundamental point of data science. It also shows the smaller error of the 2-person families. Unfortunately, the data in the current dataframe doesn't show how many 2-person families are in each county. Otherwise, we might have been able to examine why the 2-person families seemed to have such small margin of errors.
+-   The 2 person families might have the smallest errors due to 1) larger sample size or 2) in a two person family, either one person makes money or both people make money. There are two possibilities. In a three person family, either one, two, or all three make money. There are three possibilities. Such, the range of values increases as the number of people in the family increases.
 
 Ideas:
 

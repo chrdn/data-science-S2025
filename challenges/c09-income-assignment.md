@@ -424,25 +424,26 @@ compare population with income.
 
 ``` r
 ## TODO: Join df_q4 and df_pop by the appropriate column
-df_data <- inner_join(df_q3, df_pop, by = "Geography")
+df_data <- inner_join(df_q4, df_pop, by = "Geography")
 df_data
 ```
 
-    ## # A tibble: 16,100 × 9
-    ##    Geography      geographic_area_name    category    income_estimate income_moe
-    ##    <chr>          <chr>                   <chr>                 <dbl>      <dbl>
-    ##  1 0500000US01001 Autauga County, Alabama 2-person f…           64947       6663
-    ##  2 0500000US01001 Autauga County, Alabama 3-person f…           80172      14181
-    ##  3 0500000US01001 Autauga County, Alabama 4-person f…           85455      10692
-    ##  4 0500000US01001 Autauga County, Alabama 5-person f…           88601      20739
-    ##  5 0500000US01001 Autauga County, Alabama 6-person f…          103787      12387
-    ##  6 0500000US01003 Baldwin County, Alabama 2-person f…           63975       2297
-    ##  7 0500000US01003 Baldwin County, Alabama 3-person f…           79390       8851
-    ##  8 0500000US01003 Baldwin County, Alabama 4-person f…           88458       5199
-    ##  9 0500000US01003 Baldwin County, Alabama 5-person f…           91259       7011
-    ## 10 0500000US01003 Baldwin County, Alabama 6-person f…           69609      23175
+    ## # A tibble: 16,100 × 13
+    ##    Geography  geographic_area_name category income_estimate income_moe income_SE
+    ##    <chr>      <chr>                <chr>              <dbl>      <dbl>     <dbl>
+    ##  1 0500000US… Autauga County, Ala… 2-perso…           64947       6663     4050.
+    ##  2 0500000US… Autauga County, Ala… 3-perso…           80172      14181     8621.
+    ##  3 0500000US… Autauga County, Ala… 4-perso…           85455      10692     6500.
+    ##  4 0500000US… Autauga County, Ala… 5-perso…           88601      20739    12607.
+    ##  5 0500000US… Autauga County, Ala… 6-perso…          103787      12387     7530.
+    ##  6 0500000US… Baldwin County, Ala… 2-perso…           63975       2297     1396.
+    ##  7 0500000US… Baldwin County, Ala… 3-perso…           79390       8851     5381.
+    ##  8 0500000US… Baldwin County, Ala… 4-perso…           88458       5199     3160.
+    ##  9 0500000US… Baldwin County, Ala… 5-perso…           91259       7011     4262.
+    ## 10 0500000US… Baldwin County, Ala… 6-perso…           69609      23175    14088.
     ## # ℹ 16,090 more rows
-    ## # ℹ 4 more variables: `Geographic Area Name` <chr>, population_estimate <dbl>,
+    ## # ℹ 7 more variables: income_lo <dbl>, income_hi <dbl>, income_CV <dbl>,
+    ## #   `Geographic Area Name` <chr>, population_estimate <dbl>,
     ## #   `Margin of Error!!Total` <chr>, ...5 <lgl>
 
 # Analysis
@@ -456,41 +457,62 @@ uncertainties: Let’s practice!
 ### **q6** Study the following graph, making sure to note what you can *and can’t* conclude based on the estimates and confidence intervals. Document your observations below and answer the questions.
 
 ``` r
-## NOTE: No need to edit; run and inspect
-# wid <- 0.5
-# 
-# df_data %>%
-#   filter(str_detect(geographic_area_name, "Massachusetts")) %>%
-#   mutate(
-#     county = str_remove(geographic_area_name, " County,.*$"),
-#     county = fct_reorder(county, income_estimate)
-#   ) %>%
-# 
-#   ggplot(aes(county, income_estimate, color = category)) +
-#   geom_errorbar(
-#     aes(ymin = income_lo, ymax = income_hi),
-#     position = position_dodge(width = wid)
-#   ) +
-#   geom_point(position = position_dodge(width = wid)) +
-# 
-#   coord_flip() +
-#   labs(
-#     x = "County",
-#     y = "Median Household Income"
-#   )
+# NOTE: No need to edit; run and inspect
+wid <- 0.5
+
+df_data %>%
+  filter(str_detect(geographic_area_name, "Massachusetts")) %>%
+  mutate(
+    county = str_remove(geographic_area_name, " County,.*$"),
+    county = fct_reorder(county, income_estimate, .na_rm = TRUE)
+  ) %>%
+
+  ggplot(aes(county, income_estimate, color = category)) +
+  geom_errorbar(
+    aes(ymin = income_lo, ymax = income_hi),
+    position = position_dodge(width = wid)
+  ) +
+  geom_point(position = position_dodge(width = wid)) +
+
+  coord_flip() +
+  labs(
+    x = "County",
+    y = "Median Household Income"
+  )
 ```
+
+    ## Warning: Removed 2 rows containing missing values or values outside the scale range
+    ## (`geom_point()`).
+
+![](c09-income-assignment_files/figure-gfm/q6-task-1.png)<!-- -->
 
 **Observations**:
 
 - Document your observations here.
-  - (Your response here)
-  - (Your response here)
-  - …
+  - Nantucket’s 5-person has a range that spans the entire graph. In
+    fact, it probably determined the x-range of the graph.
+  - Generally, it looks like 2-person families have a the lowest median
+    income when compared to the other family categories. However,
+    5-person and 6-person families tend to have the biggest range.
+    Perhaps this is due to a lack of data points at this size.
+  - 3-person families generally make more than 2-person families.
+  - 2-person families seem to have the smallest range. Is this
+    reflective of reality, or is it simply because there are fewer
+    2-person families?
+  - Most 2-person families make between 50000 to 100000.
+  - Is there another way to see whether location or category is more
+    important to median income?
 - Can you confidently distinguish between household incomes in Suffolk
   county? Why or why not?
-  - (Your response here)
+  - Not really, the data points at Suffolk county are clumped relative
+    to the other data points. The ranges are similar, and the medians
+    are very close together, probably within ~25000 of each other.
 - Which counties have the widest confidence intervals?
-  - (Your response here)
+  - Nantucket has the largest confidence intervals. However, it doesn’t
+    appear to have data for 6-person families. The same situation
+    applies for Dukes. Hampshire has the largest confidence interval for
+    6-person families. It also contains the confidence interval for
+    5-person families.
 
 In the next task you’ll investigate the relationship between population
 and uncertainty.
@@ -500,14 +522,33 @@ and uncertainty.
 *Hint*: Remember that standard error is a function of *both* variability
 (e.g. variance) and sample size.
 
+``` r
+df_data %>% 
+  ggplot(aes(population_estimate, income_SE,color = category)) +
+  geom_point() + 
+  labs(
+    title = "Standard Error vs. Population", 
+    x = "Population Estimate", 
+    y = "Standard error"
+  )
+```
+
+    ## Warning: Removed 814 rows containing missing values or values outside the scale range
+    ## (`geom_point()`).
+
+![](c09-income-assignment_files/figure-gfm/q7-task-1.png)<!-- -->
+
 **Observations**:
 
 - What *overall* trend do you see between `SE` and population? Why might
   this trend exist?
-  - (Your response here)
+  - As Population increases, the standard error decreases. The more
+    sample size we have, the more confident we can be in our results.
 - What does this *overall* trend tell you about the relative ease of
   studying small vs large counties?
-  - (Your response here)
+  - Although small counties means less ‘work’ as we have to collect and
+    manage fewer data points, this comes at a cost of increasing
+    uncertainty.
 
 # Going Further
 
@@ -519,12 +560,51 @@ States: Pose your own question and try to answer it with the data.
 ### **q8** Pose your own question about the data. Create a visualization (or table) here, and document your observations.
 
 ``` r
-## TODO: Pose and answer your own question about the data
+df_data %>% 
+  filter(str_detect(geographic_area_name, "Alabama")) %>%
+  mutate(
+    county = str_remove(geographic_area_name, " County,.*$"),
+    county = fct_reorder(county, income_estimate, .na_rm = TRUE)
+  ) %>% 
+  ggplot(aes(population_estimate, income_estimate,size =income_CV, color = category)) +
+  geom_point() + 
+  scale_x_log10() + 
+  labs(
+    title = "Median Income vs. Population", 
+    x = "Population Estimate (Log scale)", 
+    y = "Median Income",
+    size = "Normalized Standard error"
+  )
 ```
+
+    ## Warning: Removed 17 rows containing missing values or values outside the scale range
+    ## (`geom_point()`).
+
+![](c09-income-assignment_files/figure-gfm/q8-task-1.png)<!-- -->
 
 **Observations**:
 
-- Document your observations here
+- This graph shows the median income vs population. The size correlates
+  to the normalized standard error.
+- Points on the same vertical line are probably the same county.
+- The biggest points are the 6-person families
+- We can see that the 2-person families generally have the smallest
+  normalized standard error.
+- The town with the smallest population had the biggest errors across
+  all the categories
+- This graph for Alabama shows the tendencies of the previous graphs,
+  suggesting that the relationship between sample size and error is a
+  fundamental point of data science. It also shows the smaller error of
+  the 2-person families. Unfortunately, the data in the current
+  dataframe doesn’t show how many 2-person families are in each county.
+  Otherwise, we might have been able to examine why the 2-person
+  families seemed to have such small margin of errors.
+- The 2 person families might have the smallest errors due to 1) larger
+  sample size or 2) in a two person family, either one person makes
+  money or both people make money. There are two possibilities. In a
+  three person family, either one, two, or all three make money. There
+  are three possibilities. Such, the range of values increases as the
+  number of people in the family increases.
 
 Ideas:
 
