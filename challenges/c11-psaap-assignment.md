@@ -368,6 +368,12 @@ fit_q4
     ##       rho_p          d_p         C_pv            h          I_0        eps_p  
     ##   5.640e-06    1.236e+05   -7.243e-04    1.407e-06    1.600e-07    1.107e+00
 
+``` r
+sd(df_psaap$T_f)
+```
+
+    ## [1] 38.94204
+
 **Observations**:
 
 - Which columns are excluded in the model formula above? What categories
@@ -385,15 +391,25 @@ fit_q4
   - `T_f`: $3.79\times10^{-4}$
 - What is the standard deviation of `x` in `df_psaap`? What about the
   standard deviation of `T_f`?
-  - (Your response here)
+  - `x`: .28
+  - `T_f`: 38.94204
 - How do these standard deviations relate to the regression coefficients
   for `x` and `T_f`?
-  - (Your response here)
+  - `x`, which has a small standard deviation, has a regression
+    coefficient of ~1. `T_f`, which has a large standard deviation, has
+    a regression coefficient in the magnitude of $10^{-4}$ . Although
+    this is not enough to say that regression coefficient and standard
+    deviation are related, we can see that a larger standard deviation
+    may make the output less reliant on that particular input, hence the
+    smaller regression coefficient.
 - Note that literally *all* of the inputs above have *some* effect on
   the output `T_norm`; so they are all “significant” in that sense. What
   does this tell us about the limitations of statistical significance
   for interpreting regression coefficients?
-  - (Your response here)
+  - Statistical significance lets us see which factors are most
+    important. Despite this, all factors impact the final output. When
+    choosing our model, it is important to consider whether the impact
+    is worth keeping in the model.
 
 ## Contrasting CI and PI
 
@@ -539,13 +555,18 @@ bind_rows(
 
 - Which model tends to be more accurate? How can you tell from this
   predicted-vs-actual plot?
-  - (Your response here)
+  - The `q4` model is more accurate. We can see that the points follow
+    the `Actual T_norm vs. Predicted T_norm` pretty well. Meanwhile, the
+    `x only` model generally increases, but does not do so as accuratley
+    as the `q4` model.
 - Which model tends to be *more confident* in its predictions? Put
   differently, which model has *narrower prediction intervals*?
-  - (Your response here)
+  - The `q4` model is more confident. the prediction intervals are more
+    narrow.
 - How many predictors does the `fit_simple` model need in order to make
   a prediction? What about your model `fit_q4`?
-  - (Your response here)
+  - `fit_simple` has a single predictor – `x`, while my `fit_q4` has 17
+    predictors.
 
 Based on these results, you might be tempted to always throw every
 reasonable variable into the model. For some cases, that might be the
@@ -596,6 +617,14 @@ variables the design team can control*, and *which variables they have
 chosen to allow to vary*. You will also need to choose between computing
 a CI or PI for the design prediction.
 
+|         |       |                  |
+|---------|-------|------------------|
+| `T_f`   | Input | Fluid inlet temp |
+| `rho_f` | Input | Fluid density    |
+| `mu_f`  | Input | Fluid viscosity  |
+
+  
+
 ``` r
 # NOTE: No need to change df_design; this is the target the client
 #       is considering
@@ -607,26 +636,130 @@ pr_level <- 0.8
 #        use the validation data to check your uncertainty estimates, and 
 #        make a recommendation on a *dependable range* of values for T_norm
 #        at the point `df_design`
-fit_q6 <- NA
+fit_q6 <- 
+  df_train %>%    
+  lm(formula = T_norm ~ x + L + W + U_0 + N_p + k_f + T_f + I_0 + rho_f + mu_f)
+
+df_intervals <-
+  df_train %>%
+  add_uncertainties(fit_q6, interval = "confidence", prefix = "ci") %>%
+  add_uncertainties(fit_q6, interval = "prediction", prefix = "pi")
+
+
+bind_rows(
+  df_validate %>% 
+    add_uncertainties(fit_q6, interval = "prediction", prefix = "pi") %>% 
+    select(T_norm, pi_lwr, pi_fit, pi_upr) %>% 
+    mutate(model = "q6")) %>% 
+    ggplot(aes(T_norm, pi_fit)) +
+  geom_abline(slope = 1, intercept = 0, color = "grey80", size = 2) +
+  geom_errorbar(
+    aes(ymin = pi_lwr, ymax = pi_upr),
+    width = 0
+  ) +
+  geom_point() +
+  
+  facet_grid(~ model, labeller = label_both) +
+  theme_minimal()
 ```
+
+![](c11-psaap-assignment_files/figure-gfm/q6-task-1.png)<!-- -->
+
+``` r
+rsquare(fit_q6, df_train)
+```
+
+    ## [1] 0.8663256
+
+``` r
+rsquare(fit_q6, df_validate)
+```
+
+    ## [1] 0.682321
+
+``` r
+intervals_q6 <-
+  df_validate %>% 
+  add_uncertainties(
+    fit_q6, 
+    interval = "prediction", 
+    prefix = "pi", 
+    level = pr_level)
+
+mean(intervals_q6$pi_lwr <= df_validate$T_norm & df_validate$T_norm <= intervals_q6$pi_upr)
+```
+
+    ## [1] 0.8166667
+
+``` r
+df_design_real <- 
+  df_psaap %>% 
+  filter(x==1,
+         abs(L-.2)<.01,
+         abs(W-.04)<.01)
+
+df_design_real
+```
+
+    ## # A tibble: 4 × 22
+    ##       x   idx     L      W   U_0     N_p    k_f   T_f rho_f    mu_f  lam_f  C_fp
+    ##   <dbl> <dbl> <dbl>  <dbl> <dbl>   <dbl>  <dbl> <dbl> <dbl>   <dbl>  <dbl> <dbl>
+    ## 1     1     5 0.201 0.0441  1.70  1.95e6 0.0904  252.  1.44 2.28e-5 0.0356  937.
+    ## 2     1    13 0.195 0.0320  2.00  1.79e6 0.111   311.  1.48 2.08e-5 0.0264 1096.
+    ## 3     1    21 0.198 0.0405  1.89  2.26e6 0.0939  269.  1.23 1.85e-5 0.0363 1263.
+    ## 4     1    29 0.193 0.0469  2.43  1.62e6 0.105   291.  1.37 1.80e-5 0.0253  880.
+    ## # ℹ 10 more variables: rho_p <dbl>, d_p <dbl>, C_pv <dbl>, h <dbl>, I_0 <dbl>,
+    ## #   eps_p <dbl>, avg_q <dbl>, avg_T <dbl>, rms_T <dbl>, T_norm <dbl>
+
+``` r
+summary(df_validate$T_norm)
+```
+
+    ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+    ##  0.1215  0.3859  0.6181  0.6879  0.9307  1.6301
+
+``` r
+summary(df_train$T_norm)
+```
+
+    ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+    ##  0.1250  0.3889  0.6488  0.7721  1.0062  2.2840
 
 **Recommendation**:
 
 - How much do you trust your model? Why?
-  - (Your response here)
+  - This model has a .83 rsquared value for the training set, but a .82
+    rsquared value for the validation set.
+  - 68% of the validation cases lie within the intervals. Thus, I am not
+    sure I can trust this for this use case.
 - What kind of interval—confidence or prediction—would you use for this
   task, and why?
-  - (Your response here)
+  - Because of the high amount of uncertainty, I believe that the
+    prediction interval is more fit for this example. Furthermore, we
+    are predicting individual events. As such, it is more appropriate to
+    use the prediction interval, as confidence intervals are more
+    applicable when studying population parameters where the mean is
+    applicable.
 - What fraction of validation cases lie within the intervals you
   predict? (NB. Make sure to calculate your intervals *based on the
   validation data*; don’t just use one single interval!) How does this
   compare with `pr_level`?
-  - (Your response here)
+  - 68% of validation cases lie within the intervals
 - What interval for `T_norm` would you recommend the design team to plan
   around?
-  - (Your response here)
+  - The lower quartiles for both `df_validate` and `df_train` are
+    ~.3889, while the upper quartiles lie ~1. Thus, that would be the
+    recommendation for the design team.
 - Are there any other recommendations you would provide?
-  - (Your response here)
+  - I assumed quite a bit of uncontrollable variables, such as various
+    coefficients such as heat capacity and heat coefficient. Perhaps if
+    these were included, then we can reach a higher accuracy.
+  - I would also probably notify that their design requirements (to a
+    precision of .01 units \[mm?\]) were only covered under four of the
+    140 test points. Thus, it would not be feasible to have a high
+    degree of certainty for their design choice.
+  - Furthermore, I could not discover any data points where `U_0` was 1,
+    which was in their design requirements.
 
 *Bonus*: One way you could take this analysis further is to recommend
 which other variables the design team should tightly control. You could
