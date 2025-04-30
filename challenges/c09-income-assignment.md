@@ -489,24 +489,27 @@ df_data %>%
 **Observations**:
 
 - Document your observations here.
-  - Nantucket’s 5-person has a range that spans the entire graph. In
-    fact, it probably determined the x-range of the graph.
+  - Nantucket’s 5-person has a confidence interval that spans the entire
+    graph.
   - Generally, it looks like 2-person families have a the lowest median
     income when compared to the other family categories. However,
-    5-person and 6-person families tend to have the biggest range.
-    Perhaps this is due to a lack of data points at this size.
+    5-person and 6-person families tend to have the biggest confidence
+    intervals. Perhaps this is due to a lack of data points at this
+    size.
   - 3-person families generally make more than 2-person families.
-  - 2-person families seem to have the smallest range. Is this
-    reflective of reality, or is it simply because there are fewer
+  - 2-person families seem to have the smallest confidence interval. Is
+    this reflective of reality, or is it simply because there are fewer
     2-person families?
   - Most 2-person families make between 50000 to 100000.
   - Is there another way to see whether location or category is more
     important to median income?
 - Can you confidently distinguish between household incomes in Suffolk
   county? Why or why not?
-  - Not really, the data points at Suffolk county are clumped relative
-    to the other data points. The ranges are similar, and the medians
-    are very close together, probably within ~25000 of each other.
+  - No. The confidence intervals for each median overlap. The estimated
+    medians are thus statistically indistinguishable, and it is
+    technically possible for all household incomes to be the same in
+    Suffolk county. We cannot confidently say that the median household
+    income for one group is greater than the other.
 - Which counties have the widest confidence intervals?
   - Nantucket has the largest confidence intervals. However, it doesn’t
     appear to have data for 6-person families. The same situation
@@ -528,9 +531,11 @@ df_data %>%
   geom_point() + 
   labs(
     title = "Standard Error vs. Population", 
-    x = "Population Estimate", 
-    y = "Standard error"
-  )
+    x = "Population Estimate (log scale)", 
+    y = "Standard error (log scale)"
+  ) + 
+  scale_x_log10() + 
+  scale_y_log10()
 ```
 
     ## Warning: Removed 814 rows containing missing values or values outside the scale range
