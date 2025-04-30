@@ -1,34 +1,34 @@
-# Gapminder
+Gapminder
+================
+Christopher Nie
+2025-03-01
 
-Christopher Nie 2025-03-01
-
--   [Grading Rubric](#grading-rubric)
-    -   [Individual](#individual)
-    -   [Submission](#submission)
--   [Guided EDA](#guided-eda)
-    -   [**q0** Perform your “first checks” on the dataset. What
-        variables are in this
-        dataset?](#q0-perform-your-first-checks-on-the-dataset-what-variables-are-in-this-dataset)
-    -   [**q1** Determine the most and least recent years in the
-        `gapminder`
-        dataset.](#q1-determine-the-most-and-least-recent-years-in-the-gapminder-dataset)
-    -   [**q2** Filter on years matching `year_min`, and make a plot of
-        the GDP per capita against continent. Choose an appropriate
-        `geom_` to visualize the data. What observations can you
-        make?](#q2-filter-on-years-matching-year_min-and-make-a-plot-of-the-gdp-per-capita-against-continent-choose-an-appropriate-geom_-to-visualize-the-data-what-observations-can-you-make)
-    -   [**q3** You should have found *at least* three outliers in q2
-        (but possibly many more!). Identify those outliers (figure out
-        which countries they
-        are).](#q3-you-should-have-found-at-least-three-outliers-in-q2-but-possibly-many-more-identify-those-outliers-figure-out-which-countries-they-are)
-    -   [**q4** Create a plot similar to yours from q2 studying both
-        `year_min` and `year_max`. Find a way to highlight the outliers
-        from q3 on your plot *in a way that lets you identify which
-        country is which*. Compare the patterns between `year_min` and
-        `year_max`.](#q4-create-a-plot-similar-to-yours-from-q2-studying-both-year_min-and-year_max-find-a-way-to-highlight-the-outliers-from-q3-on-your-plot-in-a-way-that-lets-you-identify-which-country-is-which-compare-the-patterns-between-year_min-and-year_max)
--   [Your Own EDA](#your-own-eda)
-    -   [**q5** Create *at least* three new figures below. With each
-        figure, try to pose new questions about the
-        data.](#q5-create-at-least-three-new-figures-below-with-each-figure-try-to-pose-new-questions-about-the-data)
+- [Grading Rubric](#grading-rubric)
+  - [Individual](#individual)
+  - [Submission](#submission)
+- [Guided EDA](#guided-eda)
+  - [**q0** Perform your “first checks” on the dataset. What variables
+    are in this
+    dataset?](#q0-perform-your-first-checks-on-the-dataset-what-variables-are-in-this-dataset)
+  - [**q1** Determine the most and least recent years in the `gapminder`
+    dataset.](#q1-determine-the-most-and-least-recent-years-in-the-gapminder-dataset)
+  - [**q2** Filter on years matching `year_min`, and make a plot of the
+    GDP per capita against continent. Choose an appropriate `geom_` to
+    visualize the data. What observations can you
+    make?](#q2-filter-on-years-matching-year_min-and-make-a-plot-of-the-gdp-per-capita-against-continent-choose-an-appropriate-geom_-to-visualize-the-data-what-observations-can-you-make)
+  - [**q3** You should have found *at least* three outliers in q2 (but
+    possibly many more!). Identify those outliers (figure out which
+    countries they
+    are).](#q3-you-should-have-found-at-least-three-outliers-in-q2-but-possibly-many-more-identify-those-outliers-figure-out-which-countries-they-are)
+  - [**q4** Create a plot similar to yours from q2 studying both
+    `year_min` and `year_max`. Find a way to highlight the outliers from
+    q3 on your plot *in a way that lets you identify which country is
+    which*. Compare the patterns between `year_min` and
+    `year_max`.](#q4-create-a-plot-similar-to-yours-from-q2-studying-both-year_min-and-year_max-find-a-way-to-highlight-the-outliers-from-q3-on-your-plot-in-a-way-that-lets-you-identify-which-country-is-which-compare-the-patterns-between-year_min-and-year_max)
+- [Your Own EDA](#your-own-eda)
+  - [**q5** Create *at least* three new figures below. With each figure,
+    try to pose new questions about the
+    data.](#q5-create-at-least-three-new-figures-below-with-each-figure-try-to-pose-new-questions-about-the-data)
 
 *Purpose*: Learning to do EDA well takes practice! In this challenge
 you’ll further practice EDA by first completing a guided exploration,
@@ -38,14 +38,14 @@ learning.
 
 <!-- include-rubric -->
 
-# Grading Rubric {#grading-rubric}
+# Grading Rubric
 
 <!-- -------------------------------------------------- -->
 
 Unlike exercises, **challenges will be graded**. The following rubrics
 define how you will be graded, both on an individual and team basis.
 
-## Individual {#individual}
+## Individual
 
 <!-- ------------------------- -->
 
@@ -58,7 +58,7 @@ define how you will be graded, both on an individual and team basis.
 | Specified | Uses the phrase “more data are necessary” without clarification | Any statement that “more data are necessary” specifies which *specific* data are needed to answer what *specific* question |
 | Code Styled | Violations of the [style guide](https://style.tidyverse.org/) hinder readability | Code sufficiently close to the [style guide](https://style.tidyverse.org/) |
 
-## Submission {#submission}
+## Submission
 
 <!-- ------------------------- -->
 
@@ -71,18 +71,16 @@ all files uploaded to GitHub.**
 library(tidyverse)
 ```
 
-```         
-## ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
-## ✔ dplyr     1.1.4     ✔ readr     2.1.5
-## ✔ forcats   1.0.0     ✔ stringr   1.5.1
-## ✔ ggplot2   3.5.1     ✔ tibble    3.2.1
-## ✔ lubridate 1.9.4     ✔ tidyr     1.3.1
-## ✔ purrr     1.0.2     
-## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-## ✖ dplyr::filter() masks stats::filter()
-## ✖ dplyr::lag()    masks stats::lag()
-## ℹ Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
-```
+    ## ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+    ## ✔ dplyr     1.1.4     ✔ readr     2.1.5
+    ## ✔ forcats   1.0.0     ✔ stringr   1.5.1
+    ## ✔ ggplot2   3.5.1     ✔ tibble    3.2.1
+    ## ✔ lubridate 1.9.4     ✔ tidyr     1.3.1
+    ## ✔ purrr     1.0.2     
+    ## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+    ## ✖ dplyr::filter() masks stats::filter()
+    ## ✖ dplyr::lag()    masks stats::lag()
+    ## ℹ Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
 
 ``` r
 library(gapminder)
@@ -95,7 +93,7 @@ hype-driven media cycle, and promote a “fact-based worldview” by
 focusing on data. The dataset we’ll study in this challenge is from
 Gapminder.
 
-# Guided EDA {#guided-eda}
+# Guided EDA
 
 <!-- -------------------------------------------------- -->
 
@@ -109,45 +107,37 @@ you’ll be responsible for doing another cycle of EDA on your own!
 names(gapminder)
 ```
 
-```         
-## [1] "country"   "continent" "year"      "lifeExp"   "pop"       "gdpPercap"
-```
+    ## [1] "country"   "continent" "year"      "lifeExp"   "pop"       "gdpPercap"
 
 ``` r
 summary(select(gapminder, year, pop, lifeExp,gdpPercap))
 ```
 
-```         
-##       year           pop               lifeExp        gdpPercap       
-##  Min.   :1952   Min.   :6.001e+04   Min.   :23.60   Min.   :   241.2  
-##  1st Qu.:1966   1st Qu.:2.794e+06   1st Qu.:48.20   1st Qu.:  1202.1  
-##  Median :1980   Median :7.024e+06   Median :60.71   Median :  3531.8  
-##  Mean   :1980   Mean   :2.960e+07   Mean   :59.47   Mean   :  7215.3  
-##  3rd Qu.:1993   3rd Qu.:1.959e+07   3rd Qu.:70.85   3rd Qu.:  9325.5  
-##  Max.   :2007   Max.   :1.319e+09   Max.   :82.60   Max.   :113523.1
-```
+    ##       year           pop               lifeExp        gdpPercap       
+    ##  Min.   :1952   Min.   :6.001e+04   Min.   :23.60   Min.   :   241.2  
+    ##  1st Qu.:1966   1st Qu.:2.794e+06   1st Qu.:48.20   1st Qu.:  1202.1  
+    ##  Median :1980   Median :7.024e+06   Median :60.71   Median :  3531.8  
+    ##  Mean   :1980   Mean   :2.960e+07   Mean   :59.47   Mean   :  7215.3  
+    ##  3rd Qu.:1993   3rd Qu.:1.959e+07   3rd Qu.:70.85   3rd Qu.:  9325.5  
+    ##  Max.   :2007   Max.   :1.319e+09   Max.   :82.60   Max.   :113523.1
 
 ``` r
 summarize(gapminder, n_distinct(country))
 ```
 
-```         
-## # A tibble: 1 × 1
-##   `n_distinct(country)`
-##                   <int>
-## 1                   142
-```
+    ## # A tibble: 1 × 1
+    ##   `n_distinct(country)`
+    ##                   <int>
+    ## 1                   142
 
 ``` r
 summarize(gapminder, n_distinct(continent))
 ```
 
-```         
-## # A tibble: 1 × 1
-##   `n_distinct(continent)`
-##                     <int>
-## 1                       5
-```
+    ## # A tibble: 1 × 1
+    ##   `n_distinct(continent)`
+    ##                     <int>
+    ## 1                       5
 
 ``` r
 ## TASK: Do your "first checks" here!
@@ -155,12 +145,12 @@ summarize(gapminder, n_distinct(continent))
 
 **Observations**:
 
--   Country
--   Continent
--   Year
--   Pop (Population)
--   LifeExp
--   gdpPerCap
+- Country
+- Continent
+- Year
+- Pop (Population)
+- LifeExp
+- gdpPerCap
 
 ### **q1** Determine the most and least recent years in the `gapminder` dataset.
 
@@ -169,8 +159,8 @@ summarize(gapminder, n_distinct(continent))
 
 ``` r
 ## TASK: Find the largest and smallest values of `year` in `gapminder`
-year_max <- max(pull(gapminder, year))
-year_min <- min(pull(gapminder, year))
+year_max <- gapminder %>% pull(year) %>%  max()
+year_min <- gapminder %>% pull(year) %>%  min()
 ```
 
 Use the following test to check your work.
@@ -180,33 +170,25 @@ Use the following test to check your work.
 assertthat::assert_that(year_max %% 7 == 5)
 ```
 
-```         
-## [1] TRUE
-```
+    ## [1] TRUE
 
 ``` r
 assertthat::assert_that(year_max %% 3 == 0)
 ```
 
-```         
-## [1] TRUE
-```
+    ## [1] TRUE
 
 ``` r
 assertthat::assert_that(year_min %% 7 == 6)
 ```
 
-```         
-## [1] TRUE
-```
+    ## [1] TRUE
 
 ``` r
 assertthat::assert_that(year_min %% 3 == 2)
 ```
 
-```         
-## [1] TRUE
-```
+    ## [1] TRUE
 
 ``` r
 if (is_tibble(year_max)) {
@@ -217,9 +199,7 @@ if (is_tibble(year_max)) {
 print("Nice!")
 ```
 
-```         
-## [1] "Nice!"
-```
+    ## [1] "Nice!"
 
 ### **q2** Filter on years matching `year_min`, and make a plot of the GDP per capita against continent. Choose an appropriate `geom_` to visualize the data. What observations can you make?
 
@@ -234,6 +214,7 @@ df_q2 <-
 df_q2 %>% 
   ggplot(aes(x = continent, y = gdpPercap)) +
   geom_boxplot() + 
+  scale_y_log10() + 
   coord_flip()
 ```
 
@@ -245,23 +226,23 @@ df_q2 %>%
 
 **Observations**:
 
--   Asia has an outlier that completely warps the plot. If we graphed
-    the densities, we would get something similar, with the medians /
-    quartiles on the right side of the graph and a single outlier on the
-    left.
--   Europe has the biggest spread, with Oceania the smallest. However,
-    this may be due to a limited amount of data / countries reported
-    from Oceania. The smallest spread of “major” continents is Africa,
-    which also has the lowest median across all the continents.
+- Asia has an outlier that completely warps the plot. If we graphed the
+  densities, we would get something similar, with the medians /
+  quartiles on the right side of the graph and a single outlier on the
+  left.
+- Europe has the biggest spread, with Oceania the smallest. However,
+  this may be due to a limited amount of data / countries reported from
+  Oceania. The smallest spread of “major” continents is Africa, which
+  also has the lowest median across all the continents.
 
 **Difficulties & Approaches**:
 
--   It would be interesting to see the plots with a rescaled plot that
-    removes the plot-warping outlier to better show the relationships
-    between the medians and quartiles.
--   It would be interesting to see how many data points are in each
-    continent, which may help explain Oceania having the highest
-    gdpPerCapita and its small / nonexistent spread.
+- It would be interesting to see the plots with a rescaled plot that
+  removes the plot-warping outlier to better show the relationships
+  between the medians and quartiles.
+- It would be interesting to see how many data points are in each
+  continent, which may help explain Oceania having the highest
+  gdpPerCapita and its small / nonexistent spread.
 
 ### **q3** You should have found *at least* three outliers in q2 (but possibly many more!). Identify those outliers (figure out which countries they are).
 
@@ -285,21 +266,19 @@ df_q3 <-
 df_q3
 ```
 
-```         
-## # A tibble: 9 × 11
-##   country continent  year lifeExp    pop gdpPercap    Q1    Q3   IQR lower_bound
-##   <fct>   <fct>     <int>   <dbl>  <int>     <dbl> <dbl> <dbl> <dbl>       <dbl>
-## 1 Kuwait  Asia       1952    55.6 1.6 e5   108382.  750. 3035. 2286.      -2679.
-## 2 Switze… Europe     1952    69.6 4.82e6    14734. 3241. 7237. 3996.      -2752.
-## 3 United… Americas   1952    68.4 1.58e8    13990. 2428. 3940. 1512.        161.
-## 4 Canada  Americas   1952    68.8 1.48e7    11367. 2428. 3940. 1512.        161.
-## 5 Bahrain Asia       1952    50.9 1.20e5     9867.  750. 3035. 2286.      -2679.
-## 6 Venezu… Americas   1952    55.1 5.44e6     7690. 2428. 3940. 1512.        161.
-## 7 South … Africa     1952    45.0 1.43e7     4725.  535. 1455.  920.       -845.
-## 8 Gabon   Africa     1952    37.0 4.21e5     4293.  535. 1455.  920.       -845.
-## 9 Angola  Africa     1952    30.0 4.23e6     3521.  535. 1455.  920.       -845.
-## # ℹ 1 more variable: upper_bound <dbl>
-```
+    ## # A tibble: 9 × 11
+    ##   country continent  year lifeExp    pop gdpPercap    Q1    Q3   IQR lower_bound
+    ##   <fct>   <fct>     <int>   <dbl>  <int>     <dbl> <dbl> <dbl> <dbl>       <dbl>
+    ## 1 Kuwait  Asia       1952    55.6 1.6 e5   108382.  750. 3035. 2286.      -2679.
+    ## 2 Switze… Europe     1952    69.6 4.82e6    14734. 3241. 7237. 3996.      -2752.
+    ## 3 United… Americas   1952    68.4 1.58e8    13990. 2428. 3940. 1512.        161.
+    ## 4 Canada  Americas   1952    68.8 1.48e7    11367. 2428. 3940. 1512.        161.
+    ## 5 Bahrain Asia       1952    50.9 1.20e5     9867.  750. 3035. 2286.      -2679.
+    ## 6 Venezu… Americas   1952    55.1 5.44e6     7690. 2428. 3940. 1512.        161.
+    ## 7 South … Africa     1952    45.0 1.43e7     4725.  535. 1455.  920.       -845.
+    ## 8 Gabon   Africa     1952    37.0 4.21e5     4293.  535. 1455.  920.       -845.
+    ## 9 Angola  Africa     1952    30.0 4.23e6     3521.  535. 1455.  920.       -845.
+    ## # ℹ 1 more variable: upper_bound <dbl>
 
 ``` r
 ## TASK: Identify the outliers from q2
@@ -307,10 +286,10 @@ df_q3
 
 **Observations**:
 
--   Identify the outlier countries from q2
-    -   Kuwait
-    -   Switzerland
-    -   United States
+- Identify the outlier countries from q2
+  - Kuwait
+  - Switzerland
+  - United States
 
 *Hint*: For the next task, it’s helpful to know a ggplot trick we’ll
 learn in an upcoming exercise: You can use the `data` argument inside
@@ -321,7 +300,7 @@ label:
 ``` r
 ## NOTE: No need to edit, use ideas from this in q4 below
 gapminder %>%
-  filter(year == max(year)) %>%
+  filter(year == 1952) %>%
 
   ggplot(aes(continent, lifeExp)) +
   geom_boxplot() +
@@ -329,6 +308,9 @@ gapminder %>%
     data = . %>% filter(country %in% c("United Kingdom", "Japan", "Zambia")),
     mapping = aes(color = country),
     size = 2
+  ) + 
+  labs(
+    title = "Life expectancy by Continent (1952))"
   )
 ```
 
@@ -356,7 +338,8 @@ gapminder_filtered %>%
     mapping = aes(color = country),
     position = position_dodge(width = 0.8), 
     size = 2
-  ) 
+  ) +
+  scale_y_log10()
 ```
 
 ![](c04-gapminder-assignment_files/figure-gfm/q4-task-1.png)<!-- -->
@@ -367,19 +350,19 @@ gapminder_filtered %>%
 
 **Observations**:
 
--   Generally, we can see that the median increased from 1952 to 2007.
-    However, we can also see that the IQR increases. This suggests that
-    the GDP of certain countries did not increase as fast as other
-    countries. However, we can see that generally, the lower quartile
-    for each continent in 2007 is higher than the lower quartile for
-    each continent in 1952. Although that makes it seem like no
-    countries had GDP per capita that outright dropped, we can see from
-    our outliers that Kuwait, which had the highest GDP per capita in
-    1957 but dropped into the maximum and minimum range of the box
-    plots. This can either be due to 1) a dropping GDP or 2) an increase
-    in population that is not matched by GDP growth.
+- Generally, we can see that the median increased from 1952 to 2007.
+  However, we can also see that the IQR increases. This suggests that
+  the GDP of certain countries did not increase as fast as other
+  countries. However, we can see that generally, the lower quartile for
+  each continent in 2007 is higher than the lower quartile for each
+  continent in 1952. Although that makes it seem like no countries had
+  GDP per capita that outright dropped, we can see from our outliers
+  that Kuwait, which had the highest GDP per capita in 1957 but dropped
+  into the maximum and minimum range of the box plots. This can either
+  be due to 1) a dropping GDP or 2) an increase in population that is
+  not matched by GDP growth.
 
-# Your Own EDA {#your-own-eda}
+# Your Own EDA
 
 <!-- -------------------------------------------------- -->
 
@@ -414,15 +397,15 @@ df_q5 %>%
 
 ![](c04-gapminder-assignment_files/figure-gfm/q5-task1-1.png)<!-- -->
 
--   Kuwait’s GDP in 2007 is higher than in 1957. Thus, it looks like the
-    population increased at a rate that was not reflected in its GDP
-    growth. Thus, we can expect the lower GDP per capita to be reflected
-    in lower standards of living. It can also be seen that Kuwait’s GDP
-    fell between 1972 and 1982. This “fall” is only perceived due to the
-    overbearing spike it saw between 1967 and 1972. If this spike is to
-    be ignored, Kuwait’s could almost be described as steadily growing
-    at a predictable rate. Nevertheless, this makes this spike ever the
-    more worth studying.
+- Kuwait’s GDP in 2007 is higher than in 1957. Thus, it looks like the
+  population increased at a rate that was not reflected in its GDP
+  growth. Thus, we can expect the lower GDP per capita to be reflected
+  in lower standards of living. It can also be seen that Kuwait’s GDP
+  fell between 1972 and 1982. This “fall” is only perceived due to the
+  overbearing spike it saw between 1967 and 1972. If this spike is to be
+  ignored, Kuwait’s could almost be described as steadily growing at a
+  predictable rate. Nevertheless, this makes this spike ever the more
+  worth studying.
 
 2.  What does life expectancy look like over the years? What would it
     look like if we lumped all the data for a year together and created
@@ -455,43 +438,44 @@ df_q5_2 %>%
 # life expectancy density distribution? by year? by continent? 
 ```
 
--   In general, we can see that life expectancy tended to go up as time
-    went by. This is due to increases in technology, healthcare, and
-    health sciences. One interesting observation is that the life
-    expectancy in 1952 and 1967 almost looked bimodal. If we look at
-    Q4’s sample graph (and change `filter(year == max(year))` to
-    `filter(year == min(year))`, then we can see that the median is
-    quite spread out across the continents. This could be a reason that
-    we see the bimodal distribution. Additionally, since the probability
-    distribution shows the mode, we can see where exactly the highest
-    concentrations of life expectancies are. Thus, it is the most
-    faithful way of lumping all the data together. However, one weakness
-    of this method of representation is that if there are more data
-    points from Africa (which had the lowest life expectancy at this
-    time period), then the representation would be likewise skewed. If
-    we lumped all the data into a Box-and-whisker plot, we would be
-    unable to see the two modes and would instead see something in the
-    middle. However, the box and whisker comes with the added benefit
-    that (if we do choose to separate the continents), the median is
-    adjusted to that group. Trying to do the same with a density
-    distribution may create a plot that is too cluttered.
--   Another observation we can see is that even in 2007, there are
-    certain countries with a life expectancy of 40.
--   Ultimately, `gapminder` does not give information on demographics,
-    such as sex, which does have a statistically significant
-    relationship with life expectancy.
--   Another observation we get is that the spread of the distribution
-    tended to increase with time as well. This is especially noticeable
-    during the time between 1982 and 2007. This suggests that there is
-    unequal improvements in healthcare among the countries represented
-    by this dataset.
+- In general, we can see that life expectancy tended to go up as time
+  went by. This is due to increases in technology, healthcare, and
+  health sciences. One interesting observation is that the life
+  expectancy in 1952 and 1967 almost looked bimodal. If we look at Q4’s
+  sample graph (and change `filter(year == max(year))` to
+  `filter(year == min(year))`, then we can see that the median is quite
+  spread out across the continents. This could be a reason that we see
+  the bimodal distribution. Additionally, since the probability
+  distribution shows the mode, we can see where exactly the highest
+  concentrations of life expectancies are. Thus, it is the most faithful
+  way of lumping all the data together. However, one weakness of this
+  method of representation is that if there are more data points from
+  Africa (which had the lowest life expectancy at this time period),
+  then the representation would be likewise skewed. If we lumped all the
+  data into a Box-and-whisker plot, we would be unable to see the two
+  modes and would instead see something in the middle. However, the box
+  and whisker comes with the added benefit that (if we do choose to
+  separate the continents), the median is adjusted to that group. Trying
+  to do the same with a density distribution may create a plot that is
+  too cluttered.
+- Another observation we can see is that even in 2007, there are certain
+  countries with a life expectancy of 40.
+- Ultimately, `gapminder` does not give information on demographics,
+  such as sex, which does have a statistically significant relationship
+  with life expectancy.
+- Another observation we get is that the spread of the distribution
+  tended to increase with time as well. This is especially noticeable
+  during the time between 1982 and 2007. This suggests that there is
+  unequal improvements in healthcare among the countries represented by
+  this dataset.
 
 3.  Does GDP per capita have a relationship with life expectancy? After
     all, GDP per capita can be correlated with standards of living, as
     well as progress in healthcare.
 
 ``` r
-ggplot(df_q5_2, aes(x = gdpPercap, y = lifeExp, color = year)) +   
+df_q5_2 %>% 
+  ggplot(aes(x = gdpPercap, y = lifeExp, color = year)) +   
   geom_point(alpha = 0.6, size = 2) +
   geom_smooth(method = "loess", se = FALSE, linewidth = 1) +
   scale_x_log10() + # Log scale for GDP per capita
@@ -505,9 +489,7 @@ ggplot(df_q5_2, aes(x = gdpPercap, y = lifeExp, color = year)) +
   theme(legend.position = "top") 
 ```
 
-```         
-## `geom_smooth()` using formula = 'y ~ x'
-```
+    ## `geom_smooth()` using formula = 'y ~ x'
 
 ![](c04-gapminder-assignment_files/figure-gfm/q5-task3-1.png)<!-- -->
 
@@ -516,43 +498,101 @@ ggplot(df_q5_2, aes(x = gdpPercap, y = lifeExp, color = year)) +
 # life expectancy vs GDP
 ```
 
--   It looks like GDP per capita is correlated with life expectancy.
-    Although the 1952 and 1967 has a dip in life expectancy, this is
-    simply be due to the fact that we only have one country that was so
-    rich at this time (Kuwait), and that skews the data at that range.
-    However, this data might not be sufficient to say that GDP per
-    capita is a leading cause in life expectancy. It is possible that
-    both tend to increase with time, and as such, GDP per capita and
-    life expectancy simply both increase with time. This is represented
-    on the graph by the fact that the line with the highest life
-    expectancy is simply the most recent year. Someone in a country with
-    a GDP per capita at $5\times10^3$ in the year 2007 would have the
-    same expected life expectancy as someone in a country with a GDP per
-    capita of $3\times10^4$ in 1967 or 1952.
+- It looks like GDP per capita is correlated with life expectancy.
+  Although the 1952 and 1967 has a dip in life expectancy, this is
+  simply be due to the fact that we only have one country that was so
+  rich at this time (Kuwait), and that skews the data at that range.
+  However, this data might not be sufficient to say that GDP per capita
+  is a leading cause in life expectancy. It is possible that both tend
+  to increase with time, and as such, GDP per capita and life expectancy
+  simply both increase with time. This is represented on the graph by
+  the fact that the line with the highest life expectancy is simply the
+  most recent year. Someone in a country with a GDP per capita at
+  $5\times10^3$ in the year 2007 would have the same expected life
+  expectancy as someone in a country with a GDP per capita of
+  $3\times10^4$ in 1967 or 1952.
 
--   The ultimate commonality might simply just be time as technology
-    increases.
+- The ultimate commonality might simply just be time as technology
+  increases.
 
--   1952 and 1967 tend to follow the same line, while 1997 and 2007
-    tendt to follow the same line.
+- 1952 and 1967 tend to follow the same line, while 1997 and 2007 tendt
+  to follow the same line.
 
--   It looks like the spread also decreases with time, with 2007 and
-    1997 having some of the smallest spreads and 1952 having a larger
-    spread. This might mean that countries got better at using their GDP
-    per capita to increase life expectancy as technology increased.
+- It looks like the spread also decreases with time, with 2007 and 1997
+  having some of the smallest spreads and 1952 having a larger spread.
+  This might mean that countries got better at using their GDP per
+  capita to increase life expectancy as technology increased.
 
-    ``` r
-    gapminder %>% 
-      group_by(continent) %>% 
-      select(continent) %>% 
-      summary()
-    ```
+  ``` r
+  gapminder %>% 
+    filter(year==1952) %>% 
+    group_by(continent) %>% 
+    select(continent) %>% 
+    summary()
+  ```
 
-    ```         
-    ##     continent  
-    ##  Africa  :624  
-    ##  Americas:300  
-    ##  Asia    :396  
-    ##  Europe  :360  
-    ##  Oceania : 24
-    ```
+      ##     continent 
+      ##  Africa  :52  
+      ##  Americas:25  
+      ##  Asia    :33  
+      ##  Europe  :30  
+      ##  Oceania : 2
+
+``` r
+gapminder %>% 
+  filter(year==2007) %>% 
+  filter(lifeExp<50) %>% 
+  select(country)
+```
+
+    ## # A tibble: 19 × 1
+    ##    country                 
+    ##    <fct>                   
+    ##  1 Afghanistan             
+    ##  2 Angola                  
+    ##  3 Burundi                 
+    ##  4 Central African Republic
+    ##  5 Congo, Dem. Rep.        
+    ##  6 Cote d'Ivoire           
+    ##  7 Guinea-Bissau           
+    ##  8 Lesotho                 
+    ##  9 Liberia                 
+    ## 10 Malawi                  
+    ## 11 Mozambique              
+    ## 12 Nigeria                 
+    ## 13 Rwanda                  
+    ## 14 Sierra Leone            
+    ## 15 Somalia                 
+    ## 16 South Africa            
+    ## 17 Swaziland               
+    ## 18 Zambia                  
+    ## 19 Zimbabwe
+
+``` r
+df_project <- 
+  gapminder %>% 
+  filter(country == "Czech Republic") %>% 
+  mutate(gdp = gdpPercap*pop)
+df_project %>% 
+  ggplot(aes(x=year)) + 
+  geom_line(aes(y=gdpPercap, color = "GDP per Capita"), linewidth = 1) +
+  #geom_line(aes(y=gdp / 1e6, color = "GDP (in millions)"), linewidth = 1) + 
+  scale_y_continuous(
+    name = "GDP per capita (USD)", 
+    sec.axis = sec_axis(~ . * 1e6, name = "GDP (USD)")
+  ) + 
+  labs(
+    title = "Czceh Republic's GDP per Capita and GDP over time"
+  )
+```
+
+![](c04-gapminder-assignment_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+
+``` r
+gapminder %>% 
+  filter(country == "Latvia")
+```
+
+    ## # A tibble: 0 × 6
+    ## # ℹ 6 variables: country <fct>, continent <fct>, year <int>, lifeExp <dbl>,
+    ## #   pop <int>, gdpPercap <dbl>

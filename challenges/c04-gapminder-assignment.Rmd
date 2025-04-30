@@ -7,6 +7,9 @@ output:
     toc: true
 prerequisites:
   - e-vis03-boxplots
+editor_options: 
+  markdown: 
+    wrap: 72
 ---
 
 *Purpose*: Learning to do EDA well takes practice! In this challenge
@@ -29,7 +32,7 @@ define how you will be graded, both on an individual and team basis.
 <!-- ------------------------- -->
 
 | Category | Needs Improvement | Satisfactory |
-|----|----|----|
+|------------------------|------------------------|------------------------|
 | Effort | Some task **q**'s left unattempted | All task **q**'s attempted |
 | Observed | Did not document observations, or observations incorrect | Documented correct observations based on analysis |
 | Supported | Some observations not clearly supported by analysis | All observations clearly supported by analysis (table, graph, etc.) |
@@ -93,8 +96,8 @@ summarize(gapminder, n_distinct(continent))
 
 ```{r q1-task}
 ## TASK: Find the largest and smallest values of `year` in `gapminder`
-year_max <- max(pull(gapminder, year))
-year_min <- min(pull(gapminder, year))
+year_max <- gapminder %>% pull(year) %>%  max()
+year_min <- gapminder %>% pull(year) %>%  min()
 ```
 
 Use the following test to check your work.
@@ -127,6 +130,7 @@ df_q2 <-
 df_q2 %>% 
   ggplot(aes(x = continent, y = gdpPercap)) +
   geom_boxplot() + 
+  scale_y_log10() + 
   coord_flip()
 ## TASK: Create a visual of gdpPercap vs continent
 ```
@@ -227,7 +231,8 @@ gapminder_filtered %>%
     mapping = aes(color = country),
     position = position_dodge(width = 0.8), 
     size = 2
-  ) 
+  ) +
+  scale_y_log10()
 ## TASK: Create a visual of gdpPercap vs continent
 ```
 
@@ -350,7 +355,8 @@ df_q5_2 %>%
     well as progress in healthcare.
 
 ```{r q5-task3}
-ggplot(df_q5_2, aes(x = gdpPercap, y = lifeExp, color = year)) +   
+df_q5_2 %>% 
+  ggplot(aes(x = gdpPercap, y = lifeExp, color = year)) +   
   geom_point(alpha = 0.6, size = 2) +
   geom_smooth(method = "loess", se = FALSE, linewidth = 1) +
   scale_x_log10() + # Log scale for GDP per capita
