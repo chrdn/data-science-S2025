@@ -246,7 +246,7 @@ prop_titanic_survivors <-
   filter(Survived == "Yes")
 prop_titanic_survivors %>% 
   ggplot(aes(x = Class, y=Prop, fill = Sex)) +
-  geom_col()
+  geom_col(position = "dodge")
 ```
 
     ## Warning: Removed 2 rows containing missing values or values outside the scale range
@@ -255,6 +255,12 @@ prop_titanic_survivors %>%
 ![](c01-titanic-assignment_files/figure-gfm/q4-task-1.png)<!-- -->
 
 **Observations**:
+
+\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~~
+
+v1 (pre revision)
+
+\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~~
 
 - Write your observations here.
   - Generally, a bigger percentage of female occupants survived
@@ -275,30 +281,46 @@ prop_titanic_survivors %>%
     $\sim 900\%$ survival rate. Thus, this chart is not useful and is
     prone to misunderstandings.
 
+\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~~
+
+v2 (post revision)
+
+\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~~
+
+- Write your observations here.
+  - It looks like all first class and all second class passengers
+    survived.
+  - Crew male had the lowest proportion of survivors, closely followed
+    by 3rd class male.
+- Is there anything *fishy* going on in your plot?
+  - There is no way that all first class and all second class passengers
+    survived. If we look at the data, 57/175 first class males survive.
+    Yet, the graph states otherwise.
+
 ### **q5** Create a plot showing the group-proportion of occupants who *did* survive, along with aesthetics for `Class`, `Sex`, *and* `Age`. Document your observations below.
 
 *Hint*: Don’t forget that you can use `facet_grid` to help consider
 additional variables!
 
 ``` r
-total <- df_titanic %>% select(n) %>% sum()
-df_titanic_total <- 
-  df_titanic %>% 
-  mutate(
-    Prop = n / total
-  )
-prop_titanic_survivors_total <- 
-  df_titanic_total %>% 
-  filter(Survived == "Yes")
-prop_titanic_survivors_total %>% 
-  ggplot(aes(x = Sex, y=Prop, fill = Age)) +
-  geom_col() +
-  facet_grid(cols = vars(Class))
+prop_titanic_survivors %>% 
+  ggplot(aes(x = Class, y=Prop, fill = Sex)) +
+  geom_col(position = "dodge") +
+  facet_grid(cols = vars(Age))
 ```
+
+    ## Warning: Removed 2 rows containing missing values or values outside the scale range
+    ## (`geom_col()`).
 
 ![](c01-titanic-assignment_files/figure-gfm/q5-task-1.png)<!-- -->
 
 **Observations**:
+
+\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~~
+
+v1 (pre revision)
+
+\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~~
 
 - This graph shows the true percentage of survivors compared to the
   total population of the Titanic occupants. We also separate the groups
@@ -309,6 +331,23 @@ prop_titanic_survivors_total %>%
   the fishy-ness.
   - In this graph, we were able to reach more believable proportion
     values. We also fixed the male-female crew survivor proportion.
+
+\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~~
+
+v2 (post revision)
+
+\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~~
+
+- This graph reveals the fishiness behind the plot generated in `q4`. It
+  appears that the children “masked” the adults.
+
+- In this graph, we can see that most of the females for the first and
+  second class survived.
+
+- All first and second class children survived.
+
+- The population with the lowest survival rates was actually second
+  class males.
 
 # Notes
 
