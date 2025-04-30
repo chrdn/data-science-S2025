@@ -154,7 +154,7 @@ Answer the questions below.
 stat <- function(x, y) {
   # TODO: Finish implementing this function
   inside_circle <- (x^2 + y^2) <= 1
-  4* inside_circle
+  4 * inside_circle
 }
 ```
 

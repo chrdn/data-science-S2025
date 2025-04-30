@@ -251,7 +251,7 @@ Answer the questions below.
 stat <- function(x, y) {
   # TODO: Finish implementing this function
   inside_circle <- (x^2 + y^2) <= 1
-  4* inside_circle
+  4 * inside_circle
 }
 ```
 
@@ -458,7 +458,7 @@ clt_ci
 ```
 
     ##    lower    upper 
-    ## 3.139325 3.148392
+    ## 3.140019 3.149035
 
 **Observations**:
 
