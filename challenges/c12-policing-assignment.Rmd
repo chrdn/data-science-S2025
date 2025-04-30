@@ -22,7 +22,7 @@ Unlike exercises, **challenges will be graded**. The following rubrics define ho
 <!-- ------------------------- -->
 
 | Category | Needs Improvement | Satisfactory |
-|----|----|----|
+|------------------------|------------------------|------------------------|
 | Effort | Some task **q**'s left unattempted | All task **q**'s attempted |
 | Observed | Did not document observations, or observations incorrect | Documented correct observations based on analysis |
 | Supported | Some observations not clearly supported by analysis | All observations clearly supported by analysis (table, graph, etc.) |
@@ -104,6 +104,7 @@ summary(df_data$subject_race)
     -   "White", "Hispanic", "Black", "Asian or Pacific Islander", "Middle Eastern or East Indian (South Asian)", "American Indian or Alaskan Native", NA, "None - for no operator present citations only", "A"
 -   What is the overlap between the two sets?
     -   Strictly speaking, there are no overlaps as it appears that they are not the same data type. `raw_Race` is a string vector, while `subject_race` is a factor vector
+    -   Content wise, the overlaps include `white`, `black`, `hispanic`, `Asian/Pacific Islander`. We can also consider `NA` to overlap. It is possible that `unknown` and `None - for no operator present citations only` are an overlap as well.
 -   What is the difference between the two sets?
     -   They are different data types. Furthermore, it appears that `raw_Race` contains additional information, such as "Middle Eastern or East Indian (South Asian)" and "American Indian or Alaskan Native"
 
@@ -150,13 +151,9 @@ df_data
 # remove NA values
 df_dataCleaned <- 
   df_data %>% 
-  filter(!is.na(subject_age),
-         !is.na(arrest_made), 
-         !is.na(subject_sex), 
-         !is.na(subject_race), 
-         !is.na(vehicle_type))
+  filter(!is.na(subject_sex))
 # Graph Arrest Rate by Subject Age (color by warning rate)
-df_dataCleaned %>% 
+df_data %>% 
   group_by(subject_age) %>%
   summarise(arrest_rate = mean(arrest_made, na.rm = TRUE),
             warning_rate = mean(warning_issued, na.rm = TRUE)) %>%
@@ -170,7 +167,7 @@ df_dataCleaned %>%
   theme_minimal()
 
 # Graph Arrest Rate by Subject Age (color by citation rate )
-df_dataCleaned %>% 
+df_data %>% 
   group_by(subject_age) %>%
   summarise(arrest_rate = mean(arrest_made, na.rm = TRUE),
             citation_rate = mean(citation_issued, na.rm = TRUE)) %>%
@@ -184,7 +181,7 @@ df_dataCleaned %>%
   theme_minimal()
 
 # Graph Arrest Rate by Subject Age (color by subject sex )
-df_dataCleaned %>% 
+df_data %>% 
   group_by(subject_age, subject_sex) %>%
   summarise(arrest_rate = mean(arrest_made, na.rm = TRUE), .groups = "drop") %>%
   ggplot(aes(x = subject_age, y = arrest_rate, color = subject_sex)) +
@@ -198,7 +195,7 @@ df_dataCleaned %>%
 
 
 # Graph Arrest Rate by Subject Age (tacet by vehicle type)
-df_dataCleaned %>% 
+df_data %>% 
   group_by(subject_age, vehicle_type) %>% 
   summarise(arrest_rate = mean(arrest_made, na.rm = TRUE), .groups = "drop") %>%
   
@@ -212,7 +209,7 @@ df_dataCleaned %>%
   facet_wrap(~vehicle_type, nrow = 1)
 
 # Graph Age distribution of car stops
-df_dataCleaned %>% 
+df_data %>% 
   ggplot(aes(x = subject_age)) +
   geom_bar(fill = "steelblue") +
   labs(title = "Arrest Rate by Subject Age",
@@ -220,7 +217,7 @@ df_dataCleaned %>%
        y = "Arrest Rate")
 
 # Finding the "spike"
-spike_data <- df_dataCleaned %>%
+spike_data <- df_data %>%
   group_by(subject_age) %>%
   summarise(
     total_stops = n(),                   
@@ -236,7 +233,7 @@ head(spike_data, 10)
 
 -   How does `arrest_rate` tend to vary with `subject_age`?
     -   The Arrest Rate vs Subject Age has two peaks.
-    -   The first peak is at age 15. Presumably, this is because Massachusett's minimum age of driving is 16. Thus, anything lower might just straight up be illegal (although it looks like some of the extreme ages have higher warning rates). Additionally, the sample size at this age group is very small. Thus, even a single arrest may change the percentage drastically. For reference, there are \~436 15-year olds stopped, while there are \~2040 16-year olds stopped. Only 44 15 year-olds were arrested, while 105 16-year olds were arrested. However, because of the sample size difference, the percentage is much bigger.
+    -   The first peak is at age 15. Presumably, this is because Massachusett's minimum age of driving is 16. Thus, anything lower might just straight up be illegal (although it looks like some of the extreme ages have higher warning rates). Additionally, the sample size at this age group is very small. Thus, even a single arrest may change the percentage drastically. For reference, there are \~474 15-year olds stopped, while there are \~2049 16-year olds stopped. Only 44 15 year-olds were arrested, while 105 16-year olds were arrested. However, because of the sample size difference, the percentage is much bigger.
     -   The second peak is at age 28.
     -   The two peak arrest rates also had the most citation rates.
     -   The peaks appear regardless of sex
@@ -266,7 +263,7 @@ df_dataCleaned %>%
 
 ```{r}
 # Contraband drugs
-df_dataCleaned %>% 
+df_data %>% 
   filter(subject_race != "unknown") %>% 
   group_by(subject_race) %>% 
   summarise(arrest_rate = mean(arrest_made, na.rm = TRUE),
@@ -278,7 +275,7 @@ df_dataCleaned %>%
        y = "Arrest Rate")
 
 # Contraband weapons
-df_dataCleaned %>% 
+df_data %>% 
   filter(subject_race != "unknown") %>% 
   group_by(subject_race) %>% 
   summarise(arrest_rate = mean(arrest_made, na.rm = TRUE),
@@ -290,7 +287,7 @@ df_dataCleaned %>%
        y = "Arrest Rate")
 
 # Contraband found
-df_dataCleaned %>% 
+df_data %>% 
   filter(subject_race != "unknown") %>% 
   group_by(subject_race) %>% 
   summarise(arrest_rate = mean(arrest_made, na.rm = TRUE),
@@ -301,7 +298,7 @@ df_dataCleaned %>%
        x = "Subject Race",
        y = "Arrest Rate")
 # Graph Age distribution of car stops
-df_dataCleaned %>% 
+df_data %>% 
   filter(subject_race != "unknown") %>% 
   ggplot(aes(x = subject_race)) +
   geom_bar() +

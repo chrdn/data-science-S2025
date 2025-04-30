@@ -282,6 +282,11 @@ summary(df_data$subject_race)
   - Strictly speaking, there are no overlaps as it appears that they are
     not the same data type. `raw_Race` is a string vector, while
     `subject_race` is a factor vector
+  - Content wise, the overlaps include `white`, `black`, `hispanic`,
+    `Asian/Pacific Islander`. We can also consider `NA` to overlap. It
+    is possible that `unknown` and
+    `None - for no operator present citations only` are an overlap as
+    well.
 - What is the difference between the two sets?
   - They are different data types. Furthermore, it appears that
     `raw_Race` contains additional information, such as “Middle Eastern
@@ -364,13 +369,9 @@ df_data
 # remove NA values
 df_dataCleaned <- 
   df_data %>% 
-  filter(!is.na(subject_age),
-         !is.na(arrest_made), 
-         !is.na(subject_sex), 
-         !is.na(subject_race), 
-         !is.na(vehicle_type))
+  filter(!is.na(subject_sex))
 # Graph Arrest Rate by Subject Age (color by warning rate)
-df_dataCleaned %>% 
+df_data %>% 
   group_by(subject_age) %>%
   summarise(arrest_rate = mean(arrest_made, na.rm = TRUE),
             warning_rate = mean(warning_issued, na.rm = TRUE)) %>%
@@ -384,11 +385,17 @@ df_dataCleaned %>%
   theme_minimal()
 ```
 
+    ## Warning: Removed 1 row containing missing values or values outside the scale range
+    ## (`geom_point()`).
+
+    ## Warning: Removed 1 row containing missing values or values outside the scale range
+    ## (`geom_line()`).
+
 ![](c12-policing-assignment_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
 
 ``` r
 # Graph Arrest Rate by Subject Age (color by citation rate )
-df_dataCleaned %>% 
+df_data %>% 
   group_by(subject_age) %>%
   summarise(arrest_rate = mean(arrest_made, na.rm = TRUE),
             citation_rate = mean(citation_issued, na.rm = TRUE)) %>%
@@ -402,11 +409,16 @@ df_dataCleaned %>%
   theme_minimal()
 ```
 
+    ## Warning: Removed 1 row containing missing values or values outside the scale range
+    ## (`geom_point()`).
+    ## Removed 1 row containing missing values or values outside the scale range
+    ## (`geom_line()`).
+
 ![](c12-policing-assignment_files/figure-gfm/unnamed-chunk-3-2.png)<!-- -->
 
 ``` r
 # Graph Arrest Rate by Subject Age (color by subject sex )
-df_dataCleaned %>% 
+df_data %>% 
   group_by(subject_age, subject_sex) %>%
   summarise(arrest_rate = mean(arrest_made, na.rm = TRUE), .groups = "drop") %>%
   ggplot(aes(x = subject_age, y = arrest_rate, color = subject_sex)) +
@@ -419,11 +431,17 @@ df_dataCleaned %>%
   theme_minimal()
 ```
 
+    ## Warning: Removed 3 rows containing missing values or values outside the scale range
+    ## (`geom_point()`).
+
+    ## Warning: Removed 3 rows containing missing values or values outside the scale range
+    ## (`geom_line()`).
+
 ![](c12-policing-assignment_files/figure-gfm/unnamed-chunk-3-3.png)<!-- -->
 
 ``` r
 # Graph Arrest Rate by Subject Age (tacet by vehicle type)
-df_dataCleaned %>% 
+df_data %>% 
   group_by(subject_age, vehicle_type) %>% 
   summarise(arrest_rate = mean(arrest_made, na.rm = TRUE), .groups = "drop") %>%
   
@@ -437,11 +455,16 @@ df_dataCleaned %>%
   facet_wrap(~vehicle_type, nrow = 1)
 ```
 
+    ## Warning: Removed 8 rows containing missing values or values outside the scale range
+    ## (`geom_point()`).
+    ## Removed 3 rows containing missing values or values outside the scale range
+    ## (`geom_line()`).
+
 ![](c12-policing-assignment_files/figure-gfm/unnamed-chunk-3-4.png)<!-- -->
 
 ``` r
 # Graph Age distribution of car stops
-df_dataCleaned %>% 
+df_data %>% 
   ggplot(aes(x = subject_age)) +
   geom_bar(fill = "steelblue") +
   labs(title = "Arrest Rate by Subject Age",
@@ -449,11 +472,14 @@ df_dataCleaned %>%
        y = "Arrest Rate")
 ```
 
+    ## Warning: Removed 158006 rows containing non-finite outside the scale range
+    ## (`stat_count()`).
+
 ![](c12-policing-assignment_files/figure-gfm/unnamed-chunk-3-5.png)<!-- -->
 
 ``` r
 # Finding the "spike"
-spike_data <- df_dataCleaned %>%
+spike_data <- df_data %>%
   group_by(subject_age) %>%
   summarise(
     total_stops = n(),                   
@@ -470,16 +496,16 @@ head(spike_data, 10)
     ## # A tibble: 10 × 4
     ##    subject_age total_stops total_arrests arrest_rate
     ##          <int>       <int>         <int>       <dbl>
-    ##  1          15         436            44      0.101 
-    ##  2          14         247            15      0.0607
-    ##  3          16        2040           104      0.0510
-    ##  4          28      102960          3834      0.0372
-    ##  5          31       86263          3135      0.0363
-    ##  6          29       97369          3507      0.0360
-    ##  7          27      107536          3849      0.0358
-    ##  8          30       92495          3292      0.0356
-    ##  9          13         170             6      0.0353
-    ## 10          26      114406          4002      0.0350
+    ##  1          15         474            44     0.0928 
+    ##  2          16        2049           105     0.0512 
+    ##  3          14         306            15     0.0490 
+    ##  4          13         206             6     0.0291 
+    ##  5          92          45             1     0.0222 
+    ##  6          59       28280           367     0.0130 
+    ##  7          12         262             3     0.0115 
+    ##  8          66       12936           134     0.0104 
+    ##  9          65       14819           127     0.00857
+    ## 10          90         125             1     0.008
 
 - How does `arrest_rate` tend to vary with `subject_age`?
   - The Arrest Rate vs Subject Age has two peaks.
@@ -489,7 +515,7 @@ head(spike_data, 10)
     the extreme ages have higher warning rates). Additionally, the
     sample size at this age group is very small. Thus, even a single
     arrest may change the percentage drastically. For reference, there
-    are ~436 15-year olds stopped, while there are ~2040 16-year olds
+    are ~474 15-year olds stopped, while there are ~2049 16-year olds
     stopped. Only 44 15 year-olds were arrested, while 105 16-year olds
     were arrested. However, because of the sample size difference, the
     percentage is much bigger.
@@ -532,7 +558,7 @@ df_dataCleaned %>%
 
 ``` r
 # Contraband drugs
-df_dataCleaned %>% 
+df_data %>% 
   filter(subject_race != "unknown") %>% 
   group_by(subject_race) %>% 
   summarise(arrest_rate = mean(arrest_made, na.rm = TRUE),
@@ -548,7 +574,7 @@ df_dataCleaned %>%
 
 ``` r
 # Contraband weapons
-df_dataCleaned %>% 
+df_data %>% 
   filter(subject_race != "unknown") %>% 
   group_by(subject_race) %>% 
   summarise(arrest_rate = mean(arrest_made, na.rm = TRUE),
@@ -564,7 +590,7 @@ df_dataCleaned %>%
 
 ``` r
 # Contraband found
-df_dataCleaned %>% 
+df_data %>% 
   filter(subject_race != "unknown") %>% 
   group_by(subject_race) %>% 
   summarise(arrest_rate = mean(arrest_made, na.rm = TRUE),
@@ -580,7 +606,7 @@ df_dataCleaned %>%
 
 ``` r
 # Graph Age distribution of car stops
-df_dataCleaned %>% 
+df_data %>% 
   filter(subject_race != "unknown") %>% 
   ggplot(aes(x = subject_race)) +
   geom_bar() +
