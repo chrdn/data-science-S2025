@@ -251,7 +251,7 @@ Answer the questions below.
 stat <- function(x, y) {
   # TODO: Finish implementing this function
   inside_circle <- (x^2 + y^2) <= 1
-  4* mean(inside_circle)
+  4* inside_circle
 }
 ```
 
@@ -299,11 +299,12 @@ print("Your assertions passed, but make sure they're checking the right thing!")
 - You chose a correct value of `stat(x, y)` when `x, y` is *outside* the
   circle. Why did you choose this value?
   - We need to check whether the elements outside the circle are
-    properly “filtered” to 0
+    properly “filtered” to 0.
 - You chose a correct value of `stat(x, y)` when `x, y` is *inside* the
   circle. Why did you choose this value?
-  - We need to check whether the elements inside the circle are properly
-    counted.
+  - The indicator function takes $$I=1$$ when the point is inside the
+    circle. From $$\pi = \mathbb{E}[4 \times I_{X \in S_c}]$$, we can
+    see that $$4 \times I_{X \in S_c}$$ must be 4.
 
 ### **q3** Estimate $\pi$
 
@@ -313,8 +314,8 @@ Using your data in `df_q1`, estimate $\pi$.
 ## TASK: Estimate pi using your data from q1
 df_q3 <- 
   df_q1 %>% 
-  summarize(pi_est = stat(x,y))
-  
+  summarize(pi_est = mean(stat(x,y)))
+
 df_q3
 ```
 
@@ -450,14 +451,14 @@ sd_pi <- sd(df_q4$pi_est)
 
 clt_ci <- c(
   lower = mean_pi - 1.96 * sd_pi,
-  upper = mean_pi + 1.96*sd_pi
+  upper = mean_pi + 1.96 * sd_pi
 )
 
 clt_ci
 ```
 
     ##    lower    upper 
-    ## 3.138498 3.147731
+    ## 3.139325 3.148392
 
 **Observations**:
 

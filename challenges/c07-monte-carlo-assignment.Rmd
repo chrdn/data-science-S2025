@@ -24,7 +24,7 @@ Unlike exercises, **challenges will be graded**. The following rubrics define ho
 <!-- ------------------------- -->
 
 | Category | Needs Improvement | Satisfactory |
-|----|----|----|
+|------------------------|------------------------|------------------------|
 | Effort | Some task **q**'s left unattempted | All task **q**'s attempted |
 | Observed | Did not document observations, or observations incorrect | Documented correct observations based on analysis |
 | Supported | Some observations not clearly supported by analysis | All observations clearly supported by analysis (table, graph, etc.) |
@@ -154,9 +154,8 @@ Answer the questions below.
 stat <- function(x, y) {
   # TODO: Finish implementing this function
   inside_circle <- (x^2 + y^2) <= 1
-  4* mean(inside_circle)
+  4* inside_circle
 }
-
 ```
 
 Implement your own assert statements. They should pass using your implementation of `stat()`, *but* they should also be *correct*.
@@ -189,9 +188,9 @@ print("Your assertions passed, but make sure they're checking the right thing!")
 *Observations*
 
 -   You chose a correct value of `stat(x, y)` when `x, y` is *outside* the circle. Why did you choose this value?
-    -   We need to check whether the elements outside the circle are properly "filtered" to 0
+    -   We need to check whether the elements outside the circle are properly "filtered" to 0.
 -   You chose a correct value of `stat(x, y)` when `x, y` is *inside* the circle. Why did you choose this value?
-    -   We need to check whether the elements inside the circle are properly counted.
+    -   The indicator function takes $$I=1$$ when the point is inside the circle. From $$\pi = \mathbb{E}[4 \times I_{X \in S_c}]$$, we can see that $$4 \times I_{X \in S_c}$$ must be 4.
 
 ### **q3** Estimate $\pi$
 
@@ -201,9 +200,10 @@ Using your data in `df_q1`, estimate $\pi$.
 ## TASK: Estimate pi using your data from q1
 df_q3 <- 
   df_q1 %>% 
-  summarize(pi_est = stat(x,y))
-  
+  summarize(pi_est = mean(stat(x,y)))
+
 df_q3
+
 ```
 
 Use the following to check that you've used the correct variable names. (NB. This does not check correctness.)
@@ -298,7 +298,7 @@ sd_pi <- sd(df_q4$pi_est)
 
 clt_ci <- c(
   lower = mean_pi - 1.96 * sd_pi,
-  upper = mean_pi + 1.96*sd_pi
+  upper = mean_pi + 1.96 * sd_pi
 )
 
 clt_ci
