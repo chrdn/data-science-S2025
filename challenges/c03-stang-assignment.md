@@ -1,7 +1,7 @@
 Aluminum Data
 ================
-Christopher Nie
-2025-02-23
+(Your name here)
+2020-
 
 - [Grading Rubric](#grading-rubric)
   - [Individual](#individual)
@@ -290,7 +290,7 @@ distinct(df_stang_long, thick)
 **Observations**:
 
 - Is there “one true value” for the material properties of Aluminum?
-  - There are many ways to characterize material properties. In this
+  - No. There are many ways to characterize material properties. In this
     dataset, we use `nu`, which represents Poisson’s ratio. Here, I
     computed the mean of the measured Poisson’s Ratio.
 - How many aluminum alloys are in this dataset? How do you know?
@@ -310,11 +310,7 @@ distinct(df_stang_long, thick)
 ### **q3** Create a visualization to investigate your question from q2 above. Can you find an answer to your question using the dataset? Would you need additional information to answer your question?
 
 ``` r
-df_q3 <- 
-  df_stang_long %>% 
-  group_by(E) %>% 
-  summarize(nu = mean(nu))
-df_q3 %>% 
+df_stang_long %>% 
   ggplot(aes(x = E, y = nu)) + 
   geom_point()
 ```
