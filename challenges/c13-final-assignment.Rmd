@@ -96,7 +96,9 @@ Some covariates included are
 
 ### Question / Hypothesis
 
-This study aims to explore the factors that cause an islander to smoke. My hypothesis is that age is the biggest determining factor, since the older the islander, the more chances they have to go to smoking.
+This study aims to answer this question: *What factors cause an islander to smoke?*
+
+My hypothesis is that age is the biggest determining factor, since the older the islander, the more chances they have to become a smoker.
 
 # Analysis
 
@@ -416,7 +418,7 @@ df_data %>%
   )
 ```
 
-These graphs show that, similar to sex, employment status does not meaningful impact whether an islander has smoked before. However, it does appear that unemployed islanders tend to become moderate/heavy smokers, and also tend to go through more smoking cycles. In fact, most employed islanders do not go through more than 5 smoking cycles. However, this connection is a bit trickier, as employment situation can change(whereas Islander sex presumably cannot). Thus, it is possible that employment status is merely a symptom of another (perhaps behavioral) characteristic that determines whether an islander is prone to smoking. Regardless, the sheer statistical difference showcased in this final graph reveals that there might be something worth exploring.
+These graphs show that, similar to sex, employment status does not meaningful impact whether an islander has smoked before. However, it does appear that unemployed islanders have a higher chance of becoming moderate/heavy smokers than employed islanders, and also tend to go through more smoking cycles. In fact, most employed islanders do not go through more than 5 smoking cycles. However, this connection is a bit trickier, as employment situation can change(whereas Islander sex presumably cannot). Thus, it is possible that employment status is merely a symptom of another (perhaps behavioral) characteristic that determines whether an islander is prone to smoking. Regardless, the sheer statistical difference showcased in this final graph reveals that there might be something worth exploring.
 
 Another possible reason for this difference might be simply be age. Most older islanders are unemployed, and as established previously, older islanders tend to undergo more smoking cycles.
 
@@ -519,7 +521,7 @@ Another way we can look at the graph is playing the game of probabilities. Just 
 
 From the analysis, we can see that, of the visible factors collected, age is most heavily correlated to the number of smoking cycles. Smoking cycles seem to be correlated with smoker level. Some of the other factors we looked at, such as employment or economic status, could have simply been proxies for age. We were also able to see how the light smoker, moderate smoker, and heavy smoker state were connected. However, the actual stochastic model behind it is still a mystery. Perhaps time in each state is important. Unfortunately, that would have been too difficult to collect and analyze, especially as many islanders went through multiple smoking cycles.
 
-My sample of 90 from each continent resulted in 270 islanders. The total population of the islands is 40000. This gives me a 6% confidence interval at a 95% confidence level. [For most research conducted at the population level, researchers look for at least 385 samples.](https://www.geopoll.com/blog/sample-size-research/#:~:text=As%20demonstrated%20through%20the%20calculation,are%20often%20used%20in%20research.) Thus, raising the sample to this level would improve our confidence interval.
+My sample of 90 from each continent resulted in 270 islanders. The total population of the islands is 40,000. This gives me a **6% confidence interval at a 95% confidence level**. [For most research conducted at the population level, researchers look for at least 385 samples.](https://www.geopoll.com/blog/sample-size-research/#:~:text=As%20demonstrated%20through%20the%20calculation,are%20often%20used%20in%20research.) Thus, raising the sample to this level would improve our confidence interval.
 
 Some questions remain. Family history, such as genetics or parent behavior, may affect the smoking behavior of any children they have. In other words, is smoking "infectious" – can an islander make the people around them more likely to smoke if they smoke? Another question that remains is how a light smoker becomes a moderate smoker, and a moderate smoker a heavy smoker. Is it the "same" randomness across all islanders, or are some islanders inherently more susceptible to it? The stance I have taken is that it is the same across all islanders, but the older islanders have more time for the probability hammer to fall. However, if this were completely true, then why are there islanders who have 4 heavy smoker instances and 4 moderate smoker instances when there are islanders who have 9 moderate smoker instances but only 1 heavy smoker instances? Why are there islanders that have hit 19 light smoker instances but only 1 moderate smoker instance? Or 11 light smoker instances but no moderate smoker instances? One factor I considered collecting was time in each state, but it was unfeasible for me to collect that data. It would definitely be an interesting direction to explore.
 

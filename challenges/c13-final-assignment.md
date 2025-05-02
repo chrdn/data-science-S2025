@@ -132,9 +132,11 @@ Some covariates included are
 
 ### Question / Hypothesis
 
-This study aims to explore the factors that cause an islander to smoke.
+This study aims to answer this question: *What factors cause an islander
+to smoke?*
+
 My hypothesis is that age is the biggest determining factor, since the
-older the islander, the more chances they have to go to smoking.
+older the islander, the more chances they have to become a smoker.
 
 # Analysis
 
@@ -573,15 +575,16 @@ df_data %>%
 
 These graphs show that, similar to sex, employment status does not
 meaningful impact whether an islander has smoked before. However, it
-does appear that unemployed islanders tend to become moderate/heavy
-smokers, and also tend to go through more smoking cycles. In fact, most
-employed islanders do not go through more than 5 smoking cycles.
-However, this connection is a bit trickier, as employment situation can
-change(whereas Islander sex presumably cannot). Thus, it is possible
-that employment status is merely a symptom of another (perhaps
-behavioral) characteristic that determines whether an islander is prone
-to smoking. Regardless, the sheer statistical difference showcased in
-this final graph reveals that there might be something worth exploring.
+does appear that unemployed islanders have a higher chance of becoming
+moderate/heavy smokers than employed islanders, and also tend to go
+through more smoking cycles. In fact, most employed islanders do not go
+through more than 5 smoking cycles. However, this connection is a bit
+trickier, as employment situation can change(whereas Islander sex
+presumably cannot). Thus, it is possible that employment status is
+merely a symptom of another (perhaps behavioral) characteristic that
+determines whether an islander is prone to smoking. Regardless, the
+sheer statistical difference showcased in this final graph reveals that
+there might be something worth exploring.
 
 Another possible reason for this difference might be simply be age. Most
 older islanders are unemployed, and as established previously, older
@@ -747,9 +750,9 @@ difficult to collect and analyze, especially as many islanders went
 through multiple smoking cycles.
 
 My sample of 90 from each continent resulted in 270 islanders. The total
-population of the islands is 40000. This gives me a 6% confidence
-interval at a 95% confidence level. [For most research conducted at the
-population level, researchers look for at least 385
+population of the islands is 40,000. This gives me a **6% confidence
+interval at a 95% confidence level**. [For most research conducted at
+the population level, researchers look for at least 385
 samples.](https://www.geopoll.com/blog/sample-size-research/#:~:text=As%20demonstrated%20through%20the%20calculation,are%20often%20used%20in%20research.)
 Thus, raising the sample to this level would improve our confidence
 interval.
