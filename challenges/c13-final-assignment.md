@@ -257,9 +257,9 @@ df_data %>%
 
 We can see that, in general for most continents, the densities are right
 skewed, showing that most people in this age group have fewer smoking
-cycles. We can also see that Ironbard seems to have a llot of
-nonsmokers, at almost 50%. Let’s see if this carries over to older
-islanders (\>35).
+cycles. We can also see that Ironbard seems to have a lot of nonsmokers,
+at almost 50% of those younger than 25. Let’s see if this carries over
+to older islanders (\>35).
 
 ``` r
 df_data %>% 
@@ -365,10 +365,9 @@ df_data %>%
 
 From these graphs, we can see that the mode of the graph definitely
 shifts to the right, suggesting that smoking cycles might be a valid
-determiner of smoker level. Noticeably, there are still some heavy
-smokers who have only been through three smoking cycles. This means that
-by extension, smoker level is somewhat related to age, if only by proxy
-of smoking cycle. This appears to be valid for all continents.
+determiner of smoker level. This means that by extension, smoker level
+is somewhat related to age, if only by proxy of smoking cycle. This
+appears to be valid for all continents.
 
 ### Other factors
 
