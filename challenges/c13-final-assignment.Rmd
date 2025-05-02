@@ -19,6 +19,8 @@ library(tidyverse)
 
 I decided to study more Islands behavior. Specifically, I was interested in how the smoking behavior works. This observational study explores the various factors that may cause an individual islander to smoke more than others.
 
+Islanders have a tendency to become a smoker, then quit smoking after a certain period of time. In this study, I will refer to this as a "smoking cycle". "Light smokers" can either 1) become a "nonsmoker" or 2) become a "moderate smoker." A "moderate smoker" can either 1) drop down to "light smoker" or 2) become a "heavy smoker." A "heavy smoker" will become a "moderate smoker" after a certain period of time. These classifications are given in the individual Islander history. I will refer to these classifications as Smoker level.
+
 There may be some uncertainty because of the process of collecting data from the Islands by hand. The Islands has a total virtual population of \~40,000. I have sampled 270 points, or \~0.675% of the total population.
 
 ### Population and Sampling Plan
@@ -248,7 +250,7 @@ df_data %>%
     title = "Count of Smoker Levels (3 or less smoking cycles)",
     x = "Smoking Levels",
     color = "Continent"
-  )
+  ) 
 
 df_data %>%
   mutate(smoker_depth = case_when(
@@ -523,6 +525,8 @@ From the analysis, we can see that, of the visible factors collected, age is mos
 
 My sample of 90 from each continent resulted in 270 islanders. The total population of the islands is 40,000. This gives me a **6% confidence interval at a 95% confidence level**. [For most research conducted at the population level, researchers look for at least 385 samples.](https://www.geopoll.com/blog/sample-size-research/#:~:text=As%20demonstrated%20through%20the%20calculation,are%20often%20used%20in%20research.) Thus, raising the sample to this level would improve our confidence interval.
 
-Some questions remain. Family history, such as genetics or parent behavior, may affect the smoking behavior of any children they have. In other words, is smoking "infectious" – can an islander make the people around them more likely to smoke if they smoke? Another question that remains is how a light smoker becomes a moderate smoker, and a moderate smoker a heavy smoker. Is it the "same" randomness across all islanders, or are some islanders inherently more susceptible to it? The stance I have taken is that it is the same across all islanders, but the older islanders have more time for the probability hammer to fall. However, if this were completely true, then why are there islanders who have 4 heavy smoker instances and 4 moderate smoker instances when there are islanders who have 9 moderate smoker instances but only 1 heavy smoker instances? Why are there islanders that have hit 19 light smoker instances but only 1 moderate smoker instance? Or 11 light smoker instances but no moderate smoker instances? One factor I considered collecting was time in each state, but it was unfeasible for me to collect that data. It would definitely be an interesting direction to explore.
+Some questions remain. Family history, such as genetics or parent behavior, may affect the smoking behavior of any children they have. In other words, is smoking "infectious" – can an islander make the people around them more likely to smoke if they smoke? Another question that remains is how a light smoker becomes a moderate smoker, and a moderate smoker a heavy smoker. Is it the "same" randomness across all islanders, or are some islanders inherently more susceptible to it? The stance I have taken is that it is the same across all islanders, but the older islanders have more time for the probability hammer to fall. However, if this were completely true, then why are there islanders who have 4 heavy smoker instances and 4 moderate smoker instances when there are islanders who have 9 moderate smoker instances but only 1 heavy smoker instances? Why are there islanders that have hit 19 light smoker instances but only 1 moderate smoker instance? Or 11 light smoker instances but no moderate smoker instances? One factor I considered collecting was time in each state, but it was unfeasible for me to collect that data. It would definitely be an interesting to see how long an islander stays in each state, and whether this is correlated to their smoker level or smoking cycles.
+
+Another direction to explore would be looking at the percentage of light smokers that become nonsmokers, and the percentage of light smokers that become moderate smokers. The current data set is unfortunately too limited to pursue this question.
 
 Finally, the biggest question of all remains: why do more than 90% of islanders smoke at least once in their life?

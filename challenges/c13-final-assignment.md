@@ -43,6 +43,15 @@ in how the smoking behavior works. This observational study explores the
 various factors that may cause an individual islander to smoke more than
 others.
 
+Islanders have a tendency to become a smoker, then quit smoking after a
+certain period of time. In this study, I will refer to this as a
+“smoking cycle”. “Light smokers” can either 1) become a “nonsmoker” or
+2) become a “moderate smoker.” A “moderate smoker” can either 1) drop
+down to “light smoker” or 2) become a “heavy smoker.” A “heavy smoker”
+will become a “moderate smoker” after a certain period of time. These
+classifications are given in the individual Islander history. I will
+refer to these classifications as Smoker level.
+
 There may be some uncertainty because of the process of collecting data
 from the Islands by hand. The Islands has a total virtual population of
 ~40,000. I have sampled 270 points, or ~0.675% of the total population.
@@ -335,7 +344,7 @@ df_data %>%
     title = "Count of Smoker Levels (3 or less smoking cycles)",
     x = "Smoking Levels",
     color = "Continent"
-  )
+  ) 
 ```
 
 ![](c13-final-assignment_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
@@ -772,8 +781,14 @@ instances? Why are there islanders that have hit 19 light smoker
 instances but only 1 moderate smoker instance? Or 11 light smoker
 instances but no moderate smoker instances? One factor I considered
 collecting was time in each state, but it was unfeasible for me to
-collect that data. It would definitely be an interesting direction to
-explore.
+collect that data. It would definitely be an interesting to see how long
+an islander stays in each state, and whether this is correlated to their
+smoker level or smoking cycles.
+
+Another direction to explore would be looking at the percentage of light
+smokers that become nonsmokers, and the percentage of light smokers that
+become moderate smokers. The current data set is unfortunately too
+limited to pursue this question.
 
 Finally, the biggest question of all remains: why do more than 90% of
 islanders smoke at least once in their life?
