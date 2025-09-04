@@ -38,7 +38,14 @@ library(tidyverse)
 
 ### The Islands
 
-I decided to study more Islands behavior. Specifically, I was interested
+The Islands is virtual human population that simulates the descendents of
+survivors from simultaneous shipwrecks across three islands. Initial settlements
+have grown into twenty-seven villages with a combined population of over forty
+thousand Islanders. The simulation models many aspects of a real population, 
+which include birth, death, and movement to other villages. Islanders are also
+able to perform many actions, many of which are recorded in their life history. 
+
+I decided to study other Islands behavior. Specifically, I was interested
 in how the smoking behavior works. This observational study explores the
 various factors that may cause an individual islander to smoke more than
 others.
